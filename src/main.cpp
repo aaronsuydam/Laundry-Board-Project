@@ -18,7 +18,7 @@ int main()
     int ID = -1;
     int linesOfInput = 0;
     int removeNthNode = -1;
-    GatorAVL AVLTree;
+    AVLTree AVLTree;
     
     //Begin Program Control Flow
     getline(cin, intParse); //get the first line of input, which should be the number of lines of input, noninclusive

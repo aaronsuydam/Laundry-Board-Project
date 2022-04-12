@@ -7,7 +7,7 @@
 
 
 
-GatorAVL::StudentNode* insert(GatorAVL::StudentNode* root, int Gator1ID, string NAME)
+AVLTree::StudentNode* insert(AVLTree::StudentNode* root, int Gator1ID, string NAME)
 {
     bool preexisting = searchIDBool(root, Gator1ID);
     if(preexisting)
@@ -17,7 +17,7 @@ GatorAVL::StudentNode* insert(GatorAVL::StudentNode* root, int Gator1ID, string 
     }
     else
     {
-        GatorAVL::StudentNode* nodeToReturn = insertHelper(root, Gator1ID, NAME);
+        AVLTree::StudentNode* nodeToReturn = insertHelper(root, Gator1ID, NAME);
         bool found = searchIDBool(nodeToReturn, Gator1ID);
         if(found)
         {
@@ -33,11 +33,11 @@ GatorAVL::StudentNode* insert(GatorAVL::StudentNode* root, int Gator1ID, string 
 }
 
 
-GatorAVL::StudentNode* insertHelper(GatorAVL::StudentNode* root, int Gator1ID, string NAME)
+AVLTree::StudentNode* insertHelper(AVLTree::StudentNode* root, int Gator1ID, string NAME)
 {
     if(root == nullptr)
     {
-        GatorAVL::StudentNode* newStudentRoot = new GatorAVL::StudentNode(Gator1ID, NAME);
+        AVLTree::StudentNode* newStudentRoot = new AVLTree::StudentNode(Gator1ID, NAME);
         return newStudentRoot;
     }
     else
@@ -71,14 +71,14 @@ GatorAVL::StudentNode* insertHelper(GatorAVL::StudentNode* root, int Gator1ID, s
 }
 
 
-GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode)
+AVLTree::StudentNode* balanceNodes(AVLTree::StudentNode* balancingNode)
 {
     balancingNode->calculateBalanceFactor();
     if (balancingNode->getBalanceFactor() > 1)
     {
         if(balancingNode->getLeftChild() != nullptr && balancingNode->getLeftChild()->getBalanceFactor() == 1) // Perform Right Rotation
         {
-            GatorAVL::StudentNode* nodeToReturn = balancingNode->getLeftChild();
+            AVLTree::StudentNode* nodeToReturn = balancingNode->getLeftChild();
             if(balancingNode->getLeftChild()->getRightChild() != nullptr)
             {
                 balancingNode->setLeftChild(balancingNode->getLeftChild()->getRightChild());
@@ -94,7 +94,7 @@ GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode)
         }
         else if(balancingNode->getLeftChild() != nullptr && balancingNode->getLeftChild()->getBalanceFactor() == -1) // Perform left right rotation
         {
-            GatorAVL::StudentNode* nodeToReturn = balancingNode->getLeftChild()->getRightChild();
+            AVLTree::StudentNode* nodeToReturn = balancingNode->getLeftChild()->getRightChild();
             balancingNode->getLeftChild()->getRightChild()->setLeftChild(balancingNode->getLeftChild());
             balancingNode->setLeftChild(balancingNode->getLeftChild()->getRightChild());
             balancingNode->getLeftChild()->getLeftChild()->setRightChild(nullptr);
@@ -109,7 +109,7 @@ GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode)
     {
         if(balancingNode->getRightChild() != nullptr && balancingNode->getRightChild()->getBalanceFactor() == 1) // Perform right left rotation
         {
-            GatorAVL::StudentNode* nodeToReturn = balancingNode->getRightChild()->getLeftChild();
+            AVLTree::StudentNode* nodeToReturn = balancingNode->getRightChild()->getLeftChild();
             balancingNode->getRightChild()->getLeftChild()->setRightChild(balancingNode->getRightChild());
             balancingNode->setRightChild(balancingNode->getRightChild()->getLeftChild());
             balancingNode->getRightChild()->getRightChild()->setLeftChild(nullptr);
@@ -120,7 +120,7 @@ GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode)
         }
         if(balancingNode->getRightChild() != nullptr && balancingNode->getRightChild()->getBalanceFactor() == -1) // Perform Left Rotation
         {
-            GatorAVL::StudentNode* nodeToReturn = balancingNode->getRightChild();
+            AVLTree::StudentNode* nodeToReturn = balancingNode->getRightChild();
             if(balancingNode->getRightChild()->getLeftChild() != nullptr)
             {
                 balancingNode->setRightChild(balancingNode->getRightChild()->getLeftChild());
@@ -141,7 +141,7 @@ GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode)
 }
 
 //  THIS WORKED FIRST TRY!!!!!!! MMMMMMMMMMMHMMMMMMM LES GOOOOOOOOOOOO
-vector<int> inorderTraversal(GatorAVL::StudentNode* root)
+vector<int> inorderTraversal(AVLTree::StudentNode* root)
 {
     vector<int> sortedData;
     vector<int> tempSortedData;
@@ -187,10 +187,10 @@ vector<int> inorderTraversal(GatorAVL::StudentNode* root)
     }
 }
 
-vector<GatorAVL::StudentNode*> inorderTraversal(GatorAVL::StudentNode* root, int count)
+vector<AVLTree::StudentNode*> inorderTraversal(AVLTree::StudentNode* root, int count)
 {
-    vector<GatorAVL::StudentNode*> sortedData;
-    vector<GatorAVL::StudentNode*> tempSortedData;
+    vector<AVLTree::StudentNode*> sortedData;
+    vector<AVLTree::StudentNode*> tempSortedData;
     if(root->getLeftChild() != nullptr)
     {
         tempSortedData = inorderTraversal(root->getLeftChild(), 0);
@@ -234,7 +234,7 @@ vector<GatorAVL::StudentNode*> inorderTraversal(GatorAVL::StudentNode* root, int
 }
 
 //Worked First Try
-vector<int> preorderTraversal(GatorAVL::StudentNode* root)
+vector<int> preorderTraversal(AVLTree::StudentNode* root)
 {
     vector<int> preorderedData;
     vector<int> tempData;
@@ -277,10 +277,10 @@ vector<int> preorderTraversal(GatorAVL::StudentNode* root)
     }
 }
 
-vector<GatorAVL::StudentNode*> preorderTraversal(GatorAVL::StudentNode* root, int count)
+vector<AVLTree::StudentNode*> preorderTraversal(AVLTree::StudentNode* root, int count)
 {
-    vector<GatorAVL::StudentNode*> preorderedData;
-    vector<GatorAVL::StudentNode*> tempData;
+    vector<AVLTree::StudentNode*> preorderedData;
+    vector<AVLTree::StudentNode*> tempData;
 
     preorderedData.push_back(root);
     if(root->getLeftChild() != nullptr)
@@ -321,7 +321,7 @@ vector<GatorAVL::StudentNode*> preorderTraversal(GatorAVL::StudentNode* root, in
 }
 
 //Worked First Try
-vector<int> postorderTraversal(GatorAVL::StudentNode* root)
+vector<int> postorderTraversal(AVLTree::StudentNode* root)
 {
     vector<int> postorderedData;
     vector<int> tempData;
@@ -362,10 +362,10 @@ vector<int> postorderTraversal(GatorAVL::StudentNode* root)
     return postorderedData;
 }
 
-vector<GatorAVL::StudentNode*> postorderTraversal(GatorAVL::StudentNode* root, int count)
+vector<AVLTree::StudentNode*> postorderTraversal(AVLTree::StudentNode* root, int count)
 {
-    vector<GatorAVL::StudentNode*> postorderedData;
-    vector<GatorAVL::StudentNode*> tempData;
+    vector<AVLTree::StudentNode*> postorderedData;
+    vector<AVLTree::StudentNode*> tempData;
     if(root->getLeftChild() != nullptr)
     {
         tempData = postorderTraversal(root->getLeftChild(), 0);
@@ -403,9 +403,9 @@ vector<GatorAVL::StudentNode*> postorderTraversal(GatorAVL::StudentNode* root, i
     return postorderedData;
 }
 
-GatorAVL::StudentNode* searchIDHelper(GatorAVL::StudentNode* root, int ID)
+AVLTree::StudentNode* searchIDHelper(AVLTree::StudentNode* root, int ID)
 {
-    GatorAVL::StudentNode* nodeToReturn = nullptr;
+    AVLTree::StudentNode* nodeToReturn = nullptr;
     if(root->getGator1ID() == ID)
     {
         return root;
@@ -424,9 +424,9 @@ GatorAVL::StudentNode* searchIDHelper(GatorAVL::StudentNode* root, int ID)
     return nodeToReturn;
 }
 
-void searchID(GatorAVL::StudentNode* root, int ID)
+void searchID(AVLTree::StudentNode* root, int ID)
 {
-    GatorAVL::StudentNode* determinant = nullptr;
+    AVLTree::StudentNode* determinant = nullptr;
     if(root == nullptr)
     {
         cout << "unsuccessful" << endl;
@@ -443,13 +443,13 @@ void searchID(GatorAVL::StudentNode* root, int ID)
     }
 }
 
-bool searchIDBool(GatorAVL::StudentNode* root, int ID)
+bool searchIDBool(AVLTree::StudentNode* root, int ID)
 {
     if(root == nullptr)
     {
         return false;
     }
-    GatorAVL::StudentNode* determinant = nullptr;
+    AVLTree::StudentNode* determinant = nullptr;
     determinant = searchIDHelper(root, ID);
     if(determinant == nullptr)
     {
@@ -461,10 +461,10 @@ bool searchIDBool(GatorAVL::StudentNode* root, int ID)
     }
 }
 
-vector<GatorAVL::StudentNode*> searchNameHelper(GatorAVL::StudentNode* root, string name)
+vector<AVLTree::StudentNode*> searchNameHelper(AVLTree::StudentNode* root, string name)
 {
-    vector<GatorAVL::StudentNode*> preorderedData;
-    vector<GatorAVL::StudentNode*> tempData;
+    vector<AVLTree::StudentNode*> preorderedData;
+    vector<AVLTree::StudentNode*> tempData;
 
     if(root->getNAME() == name)
     {
@@ -511,14 +511,14 @@ vector<GatorAVL::StudentNode*> searchNameHelper(GatorAVL::StudentNode* root, str
     }
 }
 
-void searchName(GatorAVL::StudentNode* root, string name)
+void searchName(AVLTree::StudentNode* root, string name)
 {
     if(root == nullptr)
     {
         cout << "unsuccessful" << endl;
         return;
     }
-    vector<GatorAVL::StudentNode*> preorderSearchOfNames = searchNameHelper(root, name);
+    vector<AVLTree::StudentNode*> preorderSearchOfNames = searchNameHelper(root, name);
     bool foundName = false;
     for (int i = 0; i < preorderSearchOfNames.size(); i++)
     {
@@ -535,7 +535,7 @@ void searchName(GatorAVL::StudentNode* root, string name)
     
 }
 
-int getLevels(GatorAVL::StudentNode* root)
+int getLevels(AVLTree::StudentNode* root)
 {
     root->calcHeight(root, 0);
     if(root->getRightHeight() > root->getLeftHeight())
@@ -552,7 +552,7 @@ int getLevels(GatorAVL::StudentNode* root)
     }
 }
 
-void printLevelCount(GatorAVL::StudentNode* root)
+void printLevelCount(AVLTree::StudentNode* root)
 {
     if(root == nullptr)
     {
@@ -566,11 +566,11 @@ void printLevelCount(GatorAVL::StudentNode* root)
 }
 
 
-void printINOTraversal(GatorAVL::StudentNode* root)
+void printINOTraversal(AVLTree::StudentNode* root)
 {
     //calll the traversal
 
-    vector<GatorAVL::StudentNode*> traversal = inorderTraversal(root, 0);
+    vector<AVLTree::StudentNode*> traversal = inorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
@@ -579,11 +579,11 @@ void printINOTraversal(GatorAVL::StudentNode* root)
     
 }
 
-void printPRETraversal(GatorAVL::StudentNode* root)
+void printPRETraversal(AVLTree::StudentNode* root)
 {
     //calll the traversal
 
-    vector<GatorAVL::StudentNode*> traversal = preorderTraversal(root, 0);
+    vector<AVLTree::StudentNode*> traversal = preorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
@@ -592,11 +592,11 @@ void printPRETraversal(GatorAVL::StudentNode* root)
     
 }
 
-void printPOSTraversal(GatorAVL::StudentNode* root)
+void printPOSTraversal(AVLTree::StudentNode* root)
 {
     //calll the traversal
 
-    vector<GatorAVL::StudentNode*> traversal = postorderTraversal(root, 0);
+    vector<AVLTree::StudentNode*> traversal = postorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
@@ -626,7 +626,7 @@ bool verifyInput(istringstream& nextLineOfUserInput)
 }
 
 
-void executeRegularCommand(GatorAVL* tree, string command, int ID, string Name, int NthRemoval)
+void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, int NthRemoval)
     {
         if(command == "insert")
         {
@@ -653,7 +653,7 @@ void executeRegularCommand(GatorAVL* tree, string command, int ID, string Name, 
         }
     }
 
-void executeEmptyCommand(GatorAVL* tree, string command)
+void executeEmptyCommand(AVLTree* tree, string command)
 {
     if(command == "printLevelCount")
     {
@@ -674,7 +674,7 @@ void executeEmptyCommand(GatorAVL* tree, string command)
 }
 
 
-void parseCommand(GatorAVL* tree, istringstream& nextLineOfUserInput)
+void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput)
 {
     string command = "";
     string parameters = "";
