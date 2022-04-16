@@ -29,21 +29,23 @@ class AVLTree
     public:
     class UserNode
     {
-        //UserNode Data
+        //Backend node data
         bool isRoot;
-
-        int Gator1ID;
-        int phoneNumber;
-        int roomNumber;
         int heightRight;
         int heightLeft;
         int balanceFactor;
-
         UserNode* left;
         UserNode* right;
 
+        //Metadata
         string NAME;
         string ufEmail;
+        int Gator1ID;
+        int phoneNumber;
+        int roomNumber;
+
+        //Sessions
+        vector<Session> sessions;
 
         //image variable if we decide to do a gui
         
@@ -138,6 +140,12 @@ class AVLTree
             isRoot = isReallyRoot;
         }
 
+        void addSession(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
+        {
+            Session toAdd(user, washerUsed, dryerUsed, washTime, dryTime);
+            sessions.push_back(toAdd);
+        }
+
         //Getters
         int getGator1ID()
         {
@@ -194,6 +202,10 @@ class AVLTree
             return isRoot;
         }
 
+        Session getSession(int session)
+        {
+            return sessions.at(session);
+        }
 
         //Caclulators
         int calculateBalanceFactor()
@@ -311,7 +323,27 @@ class AVLTree
 };
 
 
+class Session
+{
+    public:
+    string user;
+    int machinesUsed[2];
+    int times[2];
 
+    Session()
+    {
+        user = "";
+    }
+
+    Session(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
+    {
+        this->user = user;
+        machinesUsed[1] = washerUsed;
+        machinesUsed[2] = dryerUsed;
+        times[1] = washTime;
+        times[2] = dryTime;
+    }
+};
 
 //input control
 bool verifyInput(istringstream& nextLineOfUserInput);
