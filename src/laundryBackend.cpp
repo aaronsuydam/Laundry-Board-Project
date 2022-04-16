@@ -27,20 +27,144 @@ using namespace std;
 class AVLTree
 {
     public:
-    class UserNode
+    class Node
     {
         //UserNode Data
+        protected:
         bool isRoot;
 
-        int Gator1ID;
-        int phoneNumber;
-        int roomNumber;
         int heightRight;
         int heightLeft;
         int balanceFactor;
 
-        UserNode* left;
-        UserNode* right;
+        Node* left;
+        Node* right;
+
+        public:
+        //Constructors
+        Node()
+        {
+            heightRight = 0;
+            heightLeft = 0;
+            balanceFactor = 0;
+            isRoot = false;
+            
+            left = nullptr;
+            right = nullptr;
+        }
+
+        //Destructor
+        ~Node()
+        {
+            delete left;
+            delete right;
+        }
+
+        void setRightHeight(int newHeightRight)
+        {
+            heightRight = newHeightRight;
+        }
+
+        void setLeftHeight(int newHeightLeft)
+        {
+            heightLeft = newHeightLeft;
+        }
+
+        void setRightChild(Node* newRightChild)
+        {
+            right = newRightChild;
+        }
+
+        void setLeftChild(Node* newLeftChild)
+        {
+            left = newLeftChild;
+        }
+
+        void setBalanceFactor(int newBalanceFactor)
+        {
+            balanceFactor = newBalanceFactor;
+        }
+
+        void setRoot(bool isReallyRoot)
+        {
+            isRoot = isReallyRoot;
+        }
+
+        //Getters
+        int getRightHeight()
+        {
+            return heightRight;
+        }
+        
+        int getLeftHeight()
+        {
+            return heightLeft;
+        }
+
+        Node* getRightChild()
+        {
+            return right;
+        }
+
+        Node* getLeftChild()
+        {
+            return left;
+        }
+
+        int getBalanceFactor()
+        {
+            return balanceFactor;
+        }
+
+        bool getRoot()
+        {
+            return isRoot;
+        }
+
+
+        //Caclulators
+        int calculateBalanceFactor()
+        {
+            balanceFactor = heightLeft - heightRight;
+            return balanceFactor;
+        }
+
+        int calcHeight(Node* root, int count)
+        {
+            if(root->getLeftChild() == nullptr && root->getRightChild() == nullptr)
+            {
+                return count+=1;
+            }
+            
+            if(root->getLeftChild() != nullptr)
+            {
+                root->setLeftHeight(root->calcHeight(root->getLeftChild(),0));
+            }
+            if(root->getRightChild() != nullptr)
+            {
+                root->setRightHeight(root->calcHeight(root->getRightChild(), 0));
+            }       
+            if(root->getRightHeight() > root->getLeftHeight())
+            {
+                int returnVal = root->getRightHeight();
+                returnVal++;
+                return returnVal;
+            }
+            else
+            {
+                int returnVal = root->getLeftHeight();
+                returnVal++;
+                return returnVal;
+            }
+        }
+    };
+    class UserNode : public Node
+    {
+        //UserNode Data
+
+        int Gator1ID;
+        int phoneNumber;
+        int roomNumber;
 
         string NAME;
         string ufEmail;
@@ -112,39 +236,9 @@ class AVLTree
             roomNumber = newRoomNumber;
         }
 
-        void setRightHeight(int newHeightRight)
-        {
-            heightRight = newHeightRight;
-        }
-
-        void setLeftHeight(int newHeightLeft)
-        {
-            heightLeft = newHeightLeft;
-        }
-
         void setNAME(string newNAME)
         {
             NAME = newNAME;
-        }
-
-        void setRightChild(UserNode* newRightChild)
-        {
-            right = newRightChild;
-        }
-
-        void setLeftChild(UserNode* newLeftChild)
-        {
-            left = newLeftChild;
-        }
-
-        void setBalanceFactor(int newBalanceFactor)
-        {
-            balanceFactor = newBalanceFactor;
-        }
-
-        void setRoot(bool isReallyRoot)
-        {
-            isRoot = isReallyRoot;
         }
 
         //Getters
@@ -163,26 +257,6 @@ class AVLTree
             return roomNumber;
         }
 
-        int getRightHeight()
-        {
-            return heightRight;
-        }
-        
-        int getLeftHeight()
-        {
-            return heightLeft;
-        }
-
-        UserNode* getRightChild()
-        {
-            return right;
-        }
-
-        UserNode* getLeftChild()
-        {
-            return left;
-        }
-
         string getNAME()
         {
             return NAME;
@@ -193,67 +267,14 @@ class AVLTree
             return ufEmail;
         }
 
-        int getBalanceFactor()
-        {
-            return balanceFactor;
-        }
-
-        bool getRoot()
-        {
-            return isRoot;
-        }
-
-
-        //Caclulators
-        int calculateBalanceFactor()
-        {
-            balanceFactor = heightLeft - heightRight;
-            return balanceFactor;
-        }
-
-        int calcHeight(UserNode* root, int count)
-        {
-            if(root->getLeftChild() == nullptr && root->getRightChild() == nullptr)
-            {
-                return count+=1;
-            }
-            
-            if(root->getLeftChild() != nullptr)
-            {
-                root->setLeftHeight(root->calcHeight(root->getLeftChild(),0));
-            }
-            if(root->getRightChild() != nullptr)
-            {
-                root->setRightHeight(root->calcHeight(root->getRightChild(), 0));
-            }       
-            if(root->getRightHeight() > root->getLeftHeight())
-            {
-                int returnVal = root->getRightHeight();
-                returnVal++;
-                return returnVal;
-            }
-            else
-            {
-                int returnVal = root->getLeftHeight();
-                returnVal++;
-                return returnVal;
-            }
-        }
     };
 
-    class MachineNode
+    class MachineNode : public Node
     {
         //MachineNode Data
-        bool isRoot;
 
         int machineNumber;
         int status; // 0 for free, 1 for in use, two for out of order;
-        int heightRight;
-        int heightLeft;
-        int balanceFactor;
-
-        MachineNode* left;
-        MachineNode* right;
 
         string type;
 
@@ -328,35 +349,6 @@ class AVLTree
             type = newType;
         }
 
-        void setRightHeight(int newHeightRight)
-        {
-            heightRight = newHeightRight;
-        }
-
-        void setLeftHeight(int newHeightLeft)
-        {
-            heightLeft = newHeightLeft;
-        }  
-
-        void setRightChild(MachineNode* newRightChild)
-        {
-            right = newRightChild;
-        }
-
-        void setLeftChild(MachineNode* newLeftChild)
-        {
-            left = newLeftChild;
-        }
-
-        void setBalanceFactor(int newBalanceFactor)
-        {
-            balanceFactor = newBalanceFactor;
-        }
-
-        void setRoot(bool isReallyRoot)
-        {
-            isRoot = isReallyRoot;
-        }
 
         //Getters
         
@@ -374,73 +366,7 @@ class AVLTree
         {
             return type;
         }
-        
-        int getRightHeight()
-        {
-            return heightRight;
-        }
-        
-        int getLeftHeight()
-        {
-            return heightLeft;
-        }
 
-        MachineNode* getRightChild()
-        {
-            return right;
-        }
-
-        MachineNode* getLeftChild()
-        {
-            return left;
-        }
-        
-        int getBalanceFactor()
-        {
-            return balanceFactor;
-        }
-
-        bool getRoot()
-        {
-            return isRoot;
-        }
-
-
-        //Caclulators
-        int calculateBalanceFactor()
-        {
-            balanceFactor = heightLeft - heightRight;
-            return balanceFactor;
-        }
-
-        int calcHeight(MachineNode* root, int count)
-        {
-            if(root->getLeftChild() == nullptr && root->getRightChild() == nullptr)
-            {
-                return count+=1;
-            }
-            
-            if(root->getLeftChild() != nullptr)
-            {
-                root->setLeftHeight(root->calcHeight(root->getLeftChild(),0));
-            }
-            if(root->getRightChild() != nullptr)
-            {
-                root->setRightHeight(root->calcHeight(root->getRightChild(), 0));
-            }       
-            if(root->getRightHeight() > root->getLeftHeight())
-            {
-                int returnVal = root->getRightHeight();
-                returnVal++;
-                return returnVal;
-            }
-            else
-            {
-                int returnVal = root->getLeftHeight();
-                returnVal++;
-                return returnVal;
-            }
-        }
     };
 
     AVLTree()
@@ -495,27 +421,29 @@ class AVLTree
 };
 
 
-AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME);
-AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME);
-AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode);
-vector<int> inorderTraversal(AVLTree::UserNode* root);
-vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count);
-vector<int> preorderTraversal(AVLTree::UserNode* root);
-vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count);
-vector<int> postorderTraversal(AVLTree::UserNode* root);
-void printINOTraversal(AVLTree::UserNode* root);
-void printPRETraversal(AVLTree::UserNode* root);
-void printPOSTraversal(AVLTree::UserNode* root);
+
+
+AVLTree::Node* insert(AVLTree::Node* root, int Gator1ID, string NAME);
+AVLTree::Node* insertHelper(AVLTree::Node* root, int Gator1ID, string NAME);
+AVLTree::Node* balanceNodes(AVLTree::Node* balancingNode);
+vector<int> inorderTraversal(AVLTree::Node* root);
+vector<AVLTree::Node*> inorderTraversal(AVLTree::Node* root, int count);
+vector<int> preorderTraversal(AVLTree::Node* root);
+vector<AVLTree::Node*> preorderTraversal(AVLTree::Node* root, int count);
+vector<int> postorderTraversal(AVLTree::Node* root);
+void printINOTraversal(AVLTree::Node* root);
+void printPRETraversal(AVLTree::Node* root);
+void printPOSTraversal(AVLTree::Node* root);
     
 
     
-AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID);
-void searchID(AVLTree::UserNode* root, int ID);
-bool searchIDBool(AVLTree::UserNode* root, int ID);
-void searchName(AVLTree::UserNode* root, string name);
-vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name);
-int getLevels(AVLTree::UserNode* root);
-void printLevelCount(AVLTree::UserNode* root);
+AVLTree::Node* searchIDHelper(AVLTree::Node* root, int ID);
+void searchID(AVLTree::Node* root, int ID);
+bool searchIDBool(AVLTree::Node* root, int ID);
+void searchName(AVLTree::Node* root, string name);
+vector<AVLTree::Node*> searchNameHelper(AVLTree::Node* root, string name);
+int getLevels(AVLTree::Node* root);
+void printLevelCount(AVLTree::Node* root);
 bool verifyInput(istringstream& nextLineOfUserInput);
 void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput);
 void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, int NthRemoval);
@@ -523,7 +451,7 @@ void executeEmptyCommand(AVLTree* tree, string command);
 
 
 
-AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
+AVLTree::Node* insert(AVLTree::Node* root, int Gator1ID, string NAME)
 {
     bool preexisting = searchIDBool(root, Gator1ID);
     if(preexisting)
@@ -533,7 +461,7 @@ AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
     }
     else
     {
-        AVLTree::UserNode* nodeToReturn = insertHelper(root, Gator1ID, NAME);
+        AVLTree::Node* nodeToReturn = insertHelper(root, Gator1ID, NAME);
         bool found = searchIDBool(nodeToReturn, Gator1ID);
         if(found)
         {
@@ -549,11 +477,11 @@ AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
 }
 
 
-AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME)
+AVLTree::Node* insertHelper(AVLTree::Node* root, int Gator1ID, string NAME)
 {
     if(root == nullptr)
     {
-        AVLTree::UserNode* newStudentRoot = new AVLTree::UserNode(Gator1ID, NAME);
+        AVLTree::Node* newStudentRoot = new AVLTree::Node(Gator1ID, NAME);
         return newStudentRoot;
     }
     else
@@ -587,14 +515,14 @@ AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NA
 }
 
 
-AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
+AVLTree::Node* balanceNodes(AVLTree::Node* balancingNode)
 {
     balancingNode->calculateBalanceFactor();
     if (balancingNode->getBalanceFactor() > 1)
     {
         if(balancingNode->getLeftChild() != nullptr && balancingNode->getLeftChild()->getBalanceFactor() == 1) // Perform Right Rotation
         {
-            AVLTree::UserNode* nodeToReturn = balancingNode->getLeftChild();
+            AVLTree::Node* nodeToReturn = balancingNode->getLeftChild();
             if(balancingNode->getLeftChild()->getRightChild() != nullptr)
             {
                 balancingNode->setLeftChild(balancingNode->getLeftChild()->getRightChild());
@@ -610,7 +538,7 @@ AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
         }
         else if(balancingNode->getLeftChild() != nullptr && balancingNode->getLeftChild()->getBalanceFactor() == -1) // Perform left right rotation
         {
-            AVLTree::UserNode* nodeToReturn = balancingNode->getLeftChild()->getRightChild();
+            AVLTree::Node* nodeToReturn = balancingNode->getLeftChild()->getRightChild();
             balancingNode->getLeftChild()->getRightChild()->setLeftChild(balancingNode->getLeftChild());
             balancingNode->setLeftChild(balancingNode->getLeftChild()->getRightChild());
             balancingNode->getLeftChild()->getLeftChild()->setRightChild(nullptr);
@@ -625,7 +553,7 @@ AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
     {
         if(balancingNode->getRightChild() != nullptr && balancingNode->getRightChild()->getBalanceFactor() == 1) // Perform right left rotation
         {
-            AVLTree::UserNode* nodeToReturn = balancingNode->getRightChild()->getLeftChild();
+            AVLTree::Node* nodeToReturn = balancingNode->getRightChild()->getLeftChild();
             balancingNode->getRightChild()->getLeftChild()->setRightChild(balancingNode->getRightChild());
             balancingNode->setRightChild(balancingNode->getRightChild()->getLeftChild());
             balancingNode->getRightChild()->getRightChild()->setLeftChild(nullptr);
@@ -636,7 +564,7 @@ AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
         }
         if(balancingNode->getRightChild() != nullptr && balancingNode->getRightChild()->getBalanceFactor() == -1) // Perform Left Rotation
         {
-            AVLTree::UserNode* nodeToReturn = balancingNode->getRightChild();
+            AVLTree::Node* nodeToReturn = balancingNode->getRightChild();
             if(balancingNode->getRightChild()->getLeftChild() != nullptr)
             {
                 balancingNode->setRightChild(balancingNode->getRightChild()->getLeftChild());
@@ -657,7 +585,7 @@ AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
 }
 
 //  THIS WORKED FIRST TRY!!!!!!! MMMMMMMMMMMHMMMMMMM LES GOOOOOOOOOOOO
-vector<int> inorderTraversal(AVLTree::UserNode* root)
+vector<int> inorderTraversal(AVLTree::Node* root)
 {
     vector<int> sortedData;
     vector<int> tempSortedData;
@@ -703,10 +631,10 @@ vector<int> inorderTraversal(AVLTree::UserNode* root)
     }
 }
 
-vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::Node*> inorderTraversal(AVLTree::Node* root, int count)
 {
-    vector<AVLTree::UserNode*> sortedData;
-    vector<AVLTree::UserNode*> tempSortedData;
+    vector<AVLTree::Node*> sortedData;
+    vector<AVLTree::Node*> tempSortedData;
     if(root->getLeftChild() != nullptr)
     {
         tempSortedData = inorderTraversal(root->getLeftChild(), 0);
@@ -750,7 +678,7 @@ vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count)
 }
 
 //Worked First Try
-vector<int> preorderTraversal(AVLTree::UserNode* root)
+vector<int> preorderTraversal(AVLTree::Node* root)
 {
     vector<int> preorderedData;
     vector<int> tempData;
@@ -793,10 +721,10 @@ vector<int> preorderTraversal(AVLTree::UserNode* root)
     }
 }
 
-vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::Node*> preorderTraversal(AVLTree::Node* root, int count)
 {
-    vector<AVLTree::UserNode*> preorderedData;
-    vector<AVLTree::UserNode*> tempData;
+    vector<AVLTree::Node*> preorderedData;
+    vector<AVLTree::Node*> tempData;
 
     preorderedData.push_back(root);
     if(root->getLeftChild() != nullptr)
@@ -837,7 +765,7 @@ vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count)
 }
 
 //Worked First Try
-vector<int> postorderTraversal(AVLTree::UserNode* root)
+vector<int> postorderTraversal(AVLTree::Node* root)
 {
     vector<int> postorderedData;
     vector<int> tempData;
@@ -878,10 +806,10 @@ vector<int> postorderTraversal(AVLTree::UserNode* root)
     return postorderedData;
 }
 
-vector<AVLTree::UserNode*> postorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::Node*> postorderTraversal(AVLTree::Node* root, int count)
 {
-    vector<AVLTree::UserNode*> postorderedData;
-    vector<AVLTree::UserNode*> tempData;
+    vector<AVLTree::Node*> postorderedData;
+    vector<AVLTree::Node*> tempData;
     if(root->getLeftChild() != nullptr)
     {
         tempData = postorderTraversal(root->getLeftChild(), 0);
@@ -919,9 +847,9 @@ vector<AVLTree::UserNode*> postorderTraversal(AVLTree::UserNode* root, int count
     return postorderedData;
 }
 
-AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID)
+AVLTree::Node* searchIDHelper(AVLTree::Node* root, int ID)
 {
-    AVLTree::UserNode* nodeToReturn = nullptr;
+    AVLTree::Node* nodeToReturn = nullptr;
     if(root->getGator1ID() == ID)
     {
         return root;
@@ -940,9 +868,9 @@ AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID)
     return nodeToReturn;
 }
 
-void searchID(AVLTree::UserNode* root, int ID)
+void searchID(AVLTree::Node* root, int ID)
 {
-    AVLTree::UserNode* determinant = nullptr;
+    AVLTree::Node* determinant = nullptr;
     if(root == nullptr)
     {
         cout << "unsuccessful" << endl;
@@ -959,13 +887,13 @@ void searchID(AVLTree::UserNode* root, int ID)
     }
 }
 
-bool searchIDBool(AVLTree::UserNode* root, int ID)
+bool searchIDBool(AVLTree::Node* root, int ID)
 {
     if(root == nullptr)
     {
         return false;
     }
-    AVLTree::UserNode* determinant = nullptr;
+    AVLTree::Node* determinant = nullptr;
     determinant = searchIDHelper(root, ID);
     if(determinant == nullptr)
     {
@@ -977,10 +905,10 @@ bool searchIDBool(AVLTree::UserNode* root, int ID)
     }
 }
 
-vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name)
+vector<AVLTree::Node*> searchNameHelper(AVLTree::Node* root, string name)
 {
-    vector<AVLTree::UserNode*> preorderedData;
-    vector<AVLTree::UserNode*> tempData;
+    vector<AVLTree::Node*> preorderedData;
+    vector<AVLTree::Node*> tempData;
 
     if(root->getNAME() == name)
     {
@@ -1027,14 +955,14 @@ vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name
     }
 }
 
-void searchName(AVLTree::UserNode* root, string name)
+void searchName(AVLTree::Node* root, string name)
 {
     if(root == nullptr)
     {
         cout << "unsuccessful" << endl;
         return;
     }
-    vector<AVLTree::UserNode*> preorderSearchOfNames = searchNameHelper(root, name);
+    vector<AVLTree::Node*> preorderSearchOfNames = searchNameHelper(root, name);
     bool foundName = false;
     for (int i = 0; i < preorderSearchOfNames.size(); i++)
     {
@@ -1051,7 +979,7 @@ void searchName(AVLTree::UserNode* root, string name)
     
 }
 
-int getLevels(AVLTree::UserNode* root)
+int getLevels(AVLTree::Node* root)
 {
     root->calcHeight(root, 0);
     if(root->getRightHeight() > root->getLeftHeight())
@@ -1068,7 +996,7 @@ int getLevels(AVLTree::UserNode* root)
     }
 }
 
-void printLevelCount(AVLTree::UserNode* root)
+void printLevelCount(AVLTree::Node* root)
 {
     if(root == nullptr)
     {
@@ -1082,11 +1010,11 @@ void printLevelCount(AVLTree::UserNode* root)
 }
 
 
-void printINOTraversal(AVLTree::UserNode* root)
+void printINOTraversal(AVLTree::Node* root)
 {
     //calll the traversal
 
-    vector<AVLTree::UserNode*> traversal = inorderTraversal(root, 0);
+    vector<AVLTree::Node*> traversal = inorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
@@ -1095,11 +1023,11 @@ void printINOTraversal(AVLTree::UserNode* root)
     
 }
 
-void printPRETraversal(AVLTree::UserNode* root)
+void printPRETraversal(AVLTree::Node* root)
 {
     //calll the traversal
 
-    vector<AVLTree::UserNode*> traversal = preorderTraversal(root, 0);
+    vector<AVLTree::Node*> traversal = preorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
@@ -1108,11 +1036,11 @@ void printPRETraversal(AVLTree::UserNode* root)
     
 }
 
-void printPOSTraversal(AVLTree::UserNode* root)
+void printPOSTraversal(AVLTree::Node* root)
 {
     //calll the traversal
 
-    vector<AVLTree::UserNode*> traversal = postorderTraversal(root, 0);
+    vector<AVLTree::Node*> traversal = postorderTraversal(root, 0);
 
     for (int i = 0; i < traversal.size(); i++)
     {
