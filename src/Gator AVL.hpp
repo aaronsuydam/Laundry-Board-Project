@@ -3,7 +3,7 @@
 #include <vector>
 #include <sstream>
 using namespace std;
-class GatorAVL
+class AVLTree
 {
     public:
     class StudentNode
@@ -176,7 +176,7 @@ class GatorAVL
         }
     };
 
-    GatorAVL()
+    AVLTree()
     {
         root = nullptr;
         height = 0;
@@ -184,7 +184,7 @@ class GatorAVL
         numNodes = 0;
     }
 
-    GatorAVL(int rootGator1ID, string rootNAME)
+    AVLTree(int rootGator1ID, string rootNAME)
     {
         root = new StudentNode(rootGator1ID, rootNAME);
         height = 0;
@@ -214,7 +214,7 @@ class GatorAVL
         }
     }
 
-    GatorAVL* getTree()
+    AVLTree* getTree()
     {
         return this;
     }
@@ -224,31 +224,31 @@ class GatorAVL
     int numLevels;
     int numNodes;
 };
-    GatorAVL::StudentNode* insert(GatorAVL::StudentNode* root, int Gator1ID, string NAME);
-    GatorAVL::StudentNode* insertHelper(GatorAVL::StudentNode* root, int Gator1ID, string NAME);
-    GatorAVL::StudentNode* balanceNodes(GatorAVL::StudentNode* balancingNode);
-    vector<int> inorderTraversal(GatorAVL::StudentNode* root);
-    vector<GatorAVL::StudentNode*> inorderTraversal(GatorAVL::StudentNode* root, int count);
-    vector<int> preorderTraversal(GatorAVL::StudentNode* root);
-    vector<GatorAVL::StudentNode*> preorderTraversal(GatorAVL::StudentNode* root, int count);
-    vector<int> postorderTraversal(GatorAVL::StudentNode* root);
-    void printINOTraversal(GatorAVL::StudentNode* root);
-    void printPRETraversal(GatorAVL::StudentNode* root);
-    void printPOSTraversal(GatorAVL::StudentNode* root);
+    AVLTree::StudentNode* insert(AVLTree::StudentNode* root, int Gator1ID, string NAME);
+    AVLTree::StudentNode* insertHelper(AVLTree::StudentNode* root, int Gator1ID, string NAME);
+    AVLTree::StudentNode* balanceNodes(AVLTree::StudentNode* balancingNode);
+    vector<int> inorderTraversal(AVLTree::StudentNode* root);
+    vector<AVLTree::StudentNode*> inorderTraversal(AVLTree::StudentNode* root, int count);
+    vector<int> preorderTraversal(AVLTree::StudentNode* root);
+    vector<AVLTree::StudentNode*> preorderTraversal(AVLTree::StudentNode* root, int count);
+    vector<int> postorderTraversal(AVLTree::StudentNode* root);
+    void printINOTraversal(AVLTree::StudentNode* root);
+    void printPRETraversal(AVLTree::StudentNode* root);
+    void printPOSTraversal(AVLTree::StudentNode* root);
     
 
     
-    GatorAVL::StudentNode* searchIDHelper(GatorAVL::StudentNode* root, int ID);
-    void searchID(GatorAVL::StudentNode* root, int ID);
-    bool searchIDBool(GatorAVL::StudentNode* root, int ID);
-    void searchName(GatorAVL::StudentNode* root, string name);
-    vector<GatorAVL::StudentNode*> searchNameHelper(GatorAVL::StudentNode* root, string name);
-    int getLevels(GatorAVL::StudentNode* root);
-    void printLevelCount(GatorAVL::StudentNode* root);
+    AVLTree::StudentNode* searchIDHelper(AVLTree::StudentNode* root, int ID);
+    void searchID(AVLTree::StudentNode* root, int ID);
+    bool searchIDBool(AVLTree::StudentNode* root, int ID);
+    void searchName(AVLTree::StudentNode* root, string name);
+    vector<AVLTree::StudentNode*> searchNameHelper(AVLTree::StudentNode* root, string name);
+    int getLevels(AVLTree::StudentNode* root);
+    void printLevelCount(AVLTree::StudentNode* root);
     bool verifyInput(istringstream& nextLineOfUserInput);
-    void parseCommand(GatorAVL* tree, istringstream& nextLineOfUserInput);
-    void executeRegularCommand(GatorAVL* tree, string command, int ID, string Name, int NthRemoval);
-    void executeEmptyCommand(GatorAVL* tree, string command);
+    void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput);
+    void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, int NthRemoval);
+    void executeEmptyCommand(AVLTree* tree, string command);
     
 
 
