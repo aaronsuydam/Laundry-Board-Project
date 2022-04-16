@@ -881,6 +881,67 @@ void searchName(AVLTree::UserNode* root, string name)
     
 }
 
+AVLTree::UserNode* smallestNode(AVLTree::UserNode* node)//finds smallest node 
+{
+    AVLTree::UserNode* current = node;
+
+    //loop down left to find smallest node
+    while (current && current->getLeftChild() != NULL)
+    {
+        current = current->getLeftChild();
+    }
+
+    return current;
+}
+
+AVLTree::UserNode* removeID(AVLTree::UserNode* root ,int Gator1ID)
+{
+    if (root == nullptr)//base case
+    {
+        return root;
+    }
+
+    //if id is smaller than the root key, then it's in the left subtree
+    if (Gator1ID < root->getGator1ID())
+    {
+    root->setLeftChild(removeID(root->getLeftChild(), Gator1ID));
+    }
+    else if (Gator1ID > root->getGator1ID())  //if id is greater than the root key, then it's in the right subtree
+    {
+        root->setRightChild(removeID(root->getRightChild(), Gator1ID));
+    }
+    else  // if id is same as root's id, then this is the node to be deleted
+    {
+        // node has no child
+        if (root->getLeftChild()==nullptr && root->getRightChild()==nullptr)
+        {
+            return nullptr;
+        }
+        else if (root->getLeftChild() == nullptr) // node has one child 
+        {
+            AVLTree::UserNode* myNode = root->getRightChild();
+            root=nullptr;
+            return myNode;
+        }
+        else if (root->getRightChild() == nullptr) // node has one child 
+        {
+            AVLTree::UserNode* myNode = root->getLeftChild();
+            root=nullptr;
+            return myNode;
+        }
+
+        //if node with two children, get smallest in right subtree
+        AVLTree::UserNode* myNode = smallestNode(root->getRightChild());
+
+        // Copy temp to this node
+        root->setGator1ID(myNode->getGator1ID());
+        root->setNAME(myNode->getNAME());
+        // Delete the inorder successor
+        root->setRightChild(removeID(root->getRightChild(), myNode->getGator1ID()));
+    }
+    return root;
+}
+
 int getLevels(AVLTree::UserNode* root)
 {
     root->calcHeight(root, 0);
