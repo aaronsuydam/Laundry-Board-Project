@@ -74,15 +74,6 @@ class AVLTree
             isRoot = false;
         }
 
-        /*UserNode(int inputGator1ID, string givenNAME, int, UserNode* givenLeft, UserNode* givenRight)
-        {
-            Gator1ID = inputGator1ID;
-            heightRight = givenHeight;
-            NAME = givenNAME;
-            left = givenLeft;
-            right = givenRight;
-        }*/
-
         //Destructor
         ~UserNode()
         {
@@ -241,208 +232,6 @@ class AVLTree
         }
     };
 
-    class MachineNode
-    {
-        //MachineNode Data
-        bool isRoot;
-
-        int machineNumber;
-        int status; // 0 for free, 1 for in use, two for out of order;
-        int heightRight;
-        int heightLeft;
-        int balanceFactor;
-
-        MachineNode* left;
-        MachineNode* right;
-
-        string type;
-
-
-        //image variable if we decide to do a gui
-        
-        public:
-        //Constructors
-        MachineNode()
-        {
-            isRoot = false;
-
-            heightRight = 0;
-            heightLeft = 0;
-            balanceFactor = 0;
-            status = 0;
-            machineNumber = 0;
-
-            type = "Unknown";
-
-            left = nullptr;
-            right = nullptr;
-        }
-
-        MachineNode(int inputMachineNumber, string inputType)
-        {
-            isRoot = false;
-            
-            machineNumber = inputMachineNumber;
-            status = 0;
-            heightRight = 0;
-            heightLeft = 0;
-            balanceFactor = 0;
-
-            type = inputType;
-
-            left = nullptr;
-            right = nullptr;
-        }
-
-        /*MachineNode(int inputGator1ID, string givenNAME, int, MachineNode* givenLeft, MachineNode* givenRight)
-        {
-            Gator1ID = inputGator1ID;
-            heightRight = givenHeight;
-            NAME = givenNAME;
-            left = givenLeft;
-            right = givenRight;
-        }*/
-
-        //Destructor
-        ~MachineNode()
-        {
-            delete left;
-            delete right;
-        }
-
-
-        //Setters
-        
-        void setMachineNumber(int newMachineNumber)
-        {
-            machineNumber = newMachineNumber;
-        }
-        
-        void setStatus(int newStatus)
-        {
-            status = newStatus;
-        }
-
-        void setType(string newType)
-        {
-            type = newType;
-        }
-
-        void setRightHeight(int newHeightRight)
-        {
-            heightRight = newHeightRight;
-        }
-
-        void setLeftHeight(int newHeightLeft)
-        {
-            heightLeft = newHeightLeft;
-        }  
-
-        void setRightChild(MachineNode* newRightChild)
-        {
-            right = newRightChild;
-        }
-
-        void setLeftChild(MachineNode* newLeftChild)
-        {
-            left = newLeftChild;
-        }
-
-        void setBalanceFactor(int newBalanceFactor)
-        {
-            balanceFactor = newBalanceFactor;
-        }
-
-        void setRoot(bool isReallyRoot)
-        {
-            isRoot = isReallyRoot;
-        }
-
-        //Getters
-        
-        int getMachineNumber()
-        {
-            return machineNumber;
-        }
-
-        int getStatus()
-        {
-            return status;
-        }
-
-        string getType()
-        {
-            return type;
-        }
-        
-        int getRightHeight()
-        {
-            return heightRight;
-        }
-        
-        int getLeftHeight()
-        {
-            return heightLeft;
-        }
-
-        MachineNode* getRightChild()
-        {
-            return right;
-        }
-
-        MachineNode* getLeftChild()
-        {
-            return left;
-        }
-        
-        int getBalanceFactor()
-        {
-            return balanceFactor;
-        }
-
-        bool getRoot()
-        {
-            return isRoot;
-        }
-
-
-        //Caclulators
-        int calculateBalanceFactor()
-        {
-            balanceFactor = heightLeft - heightRight;
-            return balanceFactor;
-        }
-
-        int calcHeight(MachineNode* root, int count)
-        {
-            if(root->getLeftChild() == nullptr && root->getRightChild() == nullptr)
-            {
-                return count+=1;
-            }
-            
-            if(root->getLeftChild() != nullptr)
-            {
-                root->setLeftHeight(root->calcHeight(root->getLeftChild(),0));
-            }
-            if(root->getRightChild() != nullptr)
-            {
-                root->setRightHeight(root->calcHeight(root->getRightChild(), 0));
-            }       
-            if(root->getRightHeight() > root->getLeftHeight())
-            {
-                int returnVal = root->getRightHeight();
-                returnVal++;
-                return returnVal;
-            }
-            else
-            {
-                int returnVal = root->getLeftHeight();
-                returnVal++;
-                return returnVal;
-            }
-        }
-    };
-
     AVLTree()
     {
         root = nullptr;
@@ -486,7 +275,34 @@ class AVLTree
         return this;
     }
     
+    UserNode* insert(UserNode* root, int Gator1ID, string NAME);
+    UserNode* insertHelper(UserNode* root, int Gator1ID, string NAME);
+
+    UserNode* balanceNodes(UserNode* balancingNode);
+
+    vector<int> inorderTraversal(UserNode* root);
+    vector<UserNode*> inorderTraversal(UserNode* root, int count);
+
+    vector<int> preorderTraversal(UserNode* root);
+    vector<UserNode*> preorderTraversal(UserNode* root, int count);
+
+    vector<int> postorderTraversal(UserNode* root);
+
+    void printINOTraversal(UserNode* root);
+    void printPRETraversal(UserNode* root);
+    void printPOSTraversal(UserNode* root);
     
+    UserNode* searchIDHelper(UserNode* root, int ID);
+    void searchID(UserNode* root, int ID);
+    bool searchIDBool(UserNode* root, int ID);
+
+    void searchName(UserNode* root, string name);
+    vector<UserNode*> searchNameHelper(UserNode* root, string name);
+
+    int getLevels(UserNode* root);
+
+    void printLevelCount(UserNode* root);
+
     private:
     UserNode* root;
     int height;
@@ -495,27 +311,9 @@ class AVLTree
 };
 
 
-AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME);
-AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME);
-AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode);
-vector<int> inorderTraversal(AVLTree::UserNode* root);
-vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count);
-vector<int> preorderTraversal(AVLTree::UserNode* root);
-vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count);
-vector<int> postorderTraversal(AVLTree::UserNode* root);
-void printINOTraversal(AVLTree::UserNode* root);
-void printPRETraversal(AVLTree::UserNode* root);
-void printPOSTraversal(AVLTree::UserNode* root);
-    
 
-    
-AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID);
-void searchID(AVLTree::UserNode* root, int ID);
-bool searchIDBool(AVLTree::UserNode* root, int ID);
-void searchName(AVLTree::UserNode* root, string name);
-vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name);
-int getLevels(AVLTree::UserNode* root);
-void printLevelCount(AVLTree::UserNode* root);
+
+//input control
 bool verifyInput(istringstream& nextLineOfUserInput);
 void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput);
 void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, int NthRemoval);
