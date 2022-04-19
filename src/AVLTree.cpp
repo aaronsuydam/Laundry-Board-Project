@@ -280,7 +280,7 @@ int depthCount=0;
         return rootN;
     }
 
-     Node* smallestNode(Node* node)//finds smallest node 
+    Node* smallestNode(Node* node)//finds smallest node 
     {
         Node* current = node;
  
@@ -546,7 +546,7 @@ int depthCount=0;
         POVector.clear();
     }
 
-vector<string> POSTVector;
+    vector<string> POSTVector;
     void printPostorder(Node* root)//creates vector of names in postorder formation
     {
        if (root != NULL)

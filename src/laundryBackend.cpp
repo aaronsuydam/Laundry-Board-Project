@@ -24,6 +24,30 @@
 #include <vector>
 #include <sstream>
 using namespace std;
+
+
+class Session
+{
+    public:
+    string user;
+    int machinesUsed[2];
+    int times[2];
+
+    Session()
+    {
+        user = "";
+    }
+
+    Session(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
+    {
+        this->user = user;
+        machinesUsed[1] = washerUsed;
+        machinesUsed[2] = dryerUsed;
+        times[1] = washTime;
+        times[2] = dryTime;
+    }
+};
+
 class AVLTree
 {
     public:
@@ -242,6 +266,11 @@ class AVLTree
                 return returnVal;
             }
         }
+
+        double userAverageWashing(UserNode user);
+
+        double userAverageDrying(UserNode user);
+
     };
 
     AVLTree()
@@ -299,6 +328,7 @@ class AVLTree
     vector<UserNode*> preorderTraversal(UserNode* root, int count);
 
     vector<int> postorderTraversal(UserNode* root);
+    vector<UserNode*> postorderTraversal(UserNode* root, int count);
 
     void printINOTraversal(UserNode* root);
     void printPRETraversal(UserNode* root);
@@ -310,6 +340,9 @@ class AVLTree
 
     void searchName(UserNode* root, string name);
     vector<UserNode*> searchNameHelper(UserNode* root, string name);
+
+    UserNode* removeID(UserNode* root ,int Gator1ID);
+    UserNode* smallestNode(UserNode* node);
 
     int getLevels(UserNode* root);
 
@@ -323,28 +356,6 @@ class AVLTree
 };
 
 
-class Session
-{
-    public:
-    string user;
-    int machinesUsed[2];
-    int times[2];
-
-    Session()
-    {
-        user = "";
-    }
-
-    Session(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
-    {
-        this->user = user;
-        machinesUsed[1] = washerUsed;
-        machinesUsed[2] = dryerUsed;
-        times[1] = washTime;
-        times[2] = dryTime;
-    }
-};
-
 //input control
 bool verifyInput(istringstream& nextLineOfUserInput);
 void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput);
@@ -353,7 +364,7 @@ void executeEmptyCommand(AVLTree* tree, string command);
 
 
 
-AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
+AVLTree::UserNode* AVLTree::insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
 {
     bool preexisting = searchIDBool(root, Gator1ID);
     if(preexisting)
@@ -379,7 +390,7 @@ AVLTree::UserNode* insert(AVLTree::UserNode* root, int Gator1ID, string NAME)
 }
 
 
-AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME)
+AVLTree::UserNode* AVLTree::insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME)
 {
     if(root == nullptr)
     {
@@ -417,7 +428,7 @@ AVLTree::UserNode* insertHelper(AVLTree::UserNode* root, int Gator1ID, string NA
 }
 
 
-AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
+AVLTree::UserNode* AVLTree::balanceNodes(AVLTree::UserNode* balancingNode)
 {
     balancingNode->calculateBalanceFactor();
     if (balancingNode->getBalanceFactor() > 1)
@@ -487,7 +498,7 @@ AVLTree::UserNode* balanceNodes(AVLTree::UserNode* balancingNode)
 }
 
 //  THIS WORKED FIRST TRY!!!!!!! MMMMMMMMMMMHMMMMMMM LES GOOOOOOOOOOOO
-vector<int> inorderTraversal(AVLTree::UserNode* root)
+vector<int> AVLTree::inorderTraversal(AVLTree::UserNode* root)
 {
     vector<int> sortedData;
     vector<int> tempSortedData;
@@ -533,7 +544,7 @@ vector<int> inorderTraversal(AVLTree::UserNode* root)
     }
 }
 
-vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::UserNode*> AVLTree::inorderTraversal(AVLTree::UserNode* root, int count)
 {
     vector<AVLTree::UserNode*> sortedData;
     vector<AVLTree::UserNode*> tempSortedData;
@@ -580,7 +591,7 @@ vector<AVLTree::UserNode*> inorderTraversal(AVLTree::UserNode* root, int count)
 }
 
 //Worked First Try
-vector<int> preorderTraversal(AVLTree::UserNode* root)
+vector<int> AVLTree::preorderTraversal(AVLTree::UserNode* root)
 {
     vector<int> preorderedData;
     vector<int> tempData;
@@ -623,7 +634,7 @@ vector<int> preorderTraversal(AVLTree::UserNode* root)
     }
 }
 
-vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::UserNode*> AVLTree::preorderTraversal(AVLTree::UserNode* root, int count)
 {
     vector<AVLTree::UserNode*> preorderedData;
     vector<AVLTree::UserNode*> tempData;
@@ -667,7 +678,7 @@ vector<AVLTree::UserNode*> preorderTraversal(AVLTree::UserNode* root, int count)
 }
 
 //Worked First Try
-vector<int> postorderTraversal(AVLTree::UserNode* root)
+vector<int> AVLTree::postorderTraversal(AVLTree::UserNode* root)
 {
     vector<int> postorderedData;
     vector<int> tempData;
@@ -708,7 +719,7 @@ vector<int> postorderTraversal(AVLTree::UserNode* root)
     return postorderedData;
 }
 
-vector<AVLTree::UserNode*> postorderTraversal(AVLTree::UserNode* root, int count)
+vector<AVLTree::UserNode*> AVLTree::postorderTraversal(AVLTree::UserNode* root, int count)
 {
     vector<AVLTree::UserNode*> postorderedData;
     vector<AVLTree::UserNode*> tempData;
@@ -749,7 +760,7 @@ vector<AVLTree::UserNode*> postorderTraversal(AVLTree::UserNode* root, int count
     return postorderedData;
 }
 
-AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID)
+AVLTree::UserNode* AVLTree::searchIDHelper(AVLTree::UserNode* root, int ID)
 {
     AVLTree::UserNode* nodeToReturn = nullptr;
     if(root->getGator1ID() == ID)
@@ -770,7 +781,7 @@ AVLTree::UserNode* searchIDHelper(AVLTree::UserNode* root, int ID)
     return nodeToReturn;
 }
 
-void searchID(AVLTree::UserNode* root, int ID)
+void AVLTree::searchID(AVLTree::UserNode* root, int ID)
 {
     AVLTree::UserNode* determinant = nullptr;
     if(root == nullptr)
@@ -789,7 +800,7 @@ void searchID(AVLTree::UserNode* root, int ID)
     }
 }
 
-bool searchIDBool(AVLTree::UserNode* root, int ID)
+bool AVLTree::searchIDBool(AVLTree::UserNode* root, int ID)
 {
     if(root == nullptr)
     {
@@ -807,7 +818,7 @@ bool searchIDBool(AVLTree::UserNode* root, int ID)
     }
 }
 
-vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name)
+vector<AVLTree::UserNode*> AVLTree::searchNameHelper(AVLTree::UserNode* root, string name)
 {
     vector<AVLTree::UserNode*> preorderedData;
     vector<AVLTree::UserNode*> tempData;
@@ -857,7 +868,7 @@ vector<AVLTree::UserNode*> searchNameHelper(AVLTree::UserNode* root, string name
     }
 }
 
-void searchName(AVLTree::UserNode* root, string name)
+void AVLTree::searchName(AVLTree::UserNode* root, string name)
 {
     if(root == nullptr)
     {
@@ -881,7 +892,7 @@ void searchName(AVLTree::UserNode* root, string name)
     
 }
 
-AVLTree::UserNode* smallestNode(AVLTree::UserNode* node)//finds smallest node 
+AVLTree::UserNode* AVLTree::smallestNode(AVLTree::UserNode* node)//finds smallest node 
 {
     AVLTree::UserNode* current = node;
 
@@ -890,11 +901,10 @@ AVLTree::UserNode* smallestNode(AVLTree::UserNode* node)//finds smallest node
     {
         current = current->getLeftChild();
     }
-
     return current;
 }
 
-AVLTree::UserNode* removeID(AVLTree::UserNode* root ,int Gator1ID)
+AVLTree::UserNode* AVLTree::removeID(AVLTree::UserNode* root ,int Gator1ID)
 {
     if (root == nullptr)//base case
     {
@@ -904,7 +914,7 @@ AVLTree::UserNode* removeID(AVLTree::UserNode* root ,int Gator1ID)
     //if id is smaller than the root key, then it's in the left subtree
     if (Gator1ID < root->getGator1ID())
     {
-    root->setLeftChild(removeID(root->getLeftChild(), Gator1ID));
+    root->setLeftChild(AVLTree::removeID(root->getLeftChild(), Gator1ID));
     }
     else if (Gator1ID > root->getGator1ID())  //if id is greater than the root key, then it's in the right subtree
     {
@@ -942,7 +952,7 @@ AVLTree::UserNode* removeID(AVLTree::UserNode* root ,int Gator1ID)
     return root;
 }
 
-int getLevels(AVLTree::UserNode* root)
+int AVLTree::getLevels(AVLTree::UserNode* root)
 {
     root->calcHeight(root, 0);
     if(root->getRightHeight() > root->getLeftHeight())
@@ -959,7 +969,7 @@ int getLevels(AVLTree::UserNode* root)
     }
 }
 
-void printLevelCount(AVLTree::UserNode* root)
+void AVLTree::printLevelCount(AVLTree::UserNode* root)
 {
     if(root == nullptr)
     {
@@ -973,7 +983,7 @@ void printLevelCount(AVLTree::UserNode* root)
 }
 
 
-void printINOTraversal(AVLTree::UserNode* root)
+void AVLTree::printINOTraversal(AVLTree::UserNode* root)
 {
     //calll the traversal
 
@@ -986,7 +996,7 @@ void printINOTraversal(AVLTree::UserNode* root)
     
 }
 
-void printPRETraversal(AVLTree::UserNode* root)
+void AVLTree::printPRETraversal(AVLTree::UserNode* root)
 {
     //calll the traversal
 
@@ -999,7 +1009,7 @@ void printPRETraversal(AVLTree::UserNode* root)
     
 }
 
-void printPOSTraversal(AVLTree::UserNode* root)
+void AVLTree::printPOSTraversal(AVLTree::UserNode* root)
 {
     //calll the traversal
 
@@ -1011,6 +1021,177 @@ void printPOSTraversal(AVLTree::UserNode* root)
     }
     
 }
+
+
+
+
+
+
+double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode user)
+{
+    //1 washer 2 dryer
+    double averageTime;
+    vector<Session> myvec=user.sessions;
+    double size;
+    for(int i=0; i<user.sessions.size(); i++)
+    {
+        Session mysesh= user.getSession(i);
+        if(mysesh.machinesUsed[i]==1)
+        {
+            averageTime= averageTime + (mysesh.times[i]);
+            size++;
+        }
+    }
+    averageTime =(averageTime/size);
+    return averageTime;
+}
+double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode user)
+{
+    //1 washer 2 dryer
+    double averageTime;
+    vector<Session> myvec=user.sessions;
+    double size;
+    for(int i=0; i<user.sessions.size(); i++)
+    {
+        Session mysesh= user.getSession(i);
+        if(mysesh.machinesUsed[i]==2)
+        {
+        averageTime= averageTime + (mysesh.times[i]);
+        size++;
+        }
+    }
+    averageTime = (averageTime/size);
+    return averageTime;
+}
+
+vector<int> inorderTraversalWashingTimes(AVLTree::UserNode root)
+{
+    vector<int> averageWashingTimes;
+    vector<int> tempSortedData;
+    if(root.getLeftChild() != nullptr)
+    {
+        tempSortedData = inorderTraversalWashingTimes(*root.getLeftChild());
+        for (int i = 0; i < tempSortedData.size(); i++)
+        {
+            averageWashingTimes.push_back(root.userAverageWashing(root));
+        }
+        averageWashingTimes.push_back(root.userAverageWashing(root));
+        if(root.getRightChild() != nullptr)
+        {
+            tempSortedData = inorderTraversalWashingTimes(*root.getRightChild());
+            for (int i = 0; i < tempSortedData.size(); i++)
+            {
+                averageWashingTimes.push_back(root.userAverageWashing(root));
+            }
+            return averageWashingTimes;
+        }
+        else
+        {
+            return averageWashingTimes;
+        }
+
+        
+    }
+    else if(root.getRightChild() != nullptr)
+    {
+        averageWashingTimes.push_back(root.userAverageWashing(root));
+        tempSortedData = inorderTraversalWashingTimes(*root.getRightChild());
+        for (int i = 0; i < tempSortedData.size(); i++)
+        {
+            averageWashingTimes.push_back(tempSortedData.at(i));
+        }
+        
+        return averageWashingTimes;
+    }
+    else
+    {
+        //averageWashingTimes.push_back(root.getGator1ID()); ??don't understand purpose of this pushback
+        return averageWashingTimes;
+    }
+}
+
+double totalAverageWashing(AVLTree::UserNode root)
+{
+    vector<int> myVec= inorderTraversalWashingTimes(root);
+    double avg;
+    for(int i=0;i<myVec.size();i++)
+    {
+        avg=avg+(myVec.at(i));
+    }
+
+    avg=avg/(myVec.size());
+    return avg;
+}
+
+vector<int> inorderTraversalDrying(AVLTree::UserNode root)
+{
+    vector<int> averageDryingTimes;
+    vector<int> tempSortedData;
+    if(root.getLeftChild() != nullptr)
+    {
+        tempSortedData = inorderTraversalDrying(*root.getLeftChild());
+        for (int i = 0; i < tempSortedData.size(); i++)
+        {
+            averageDryingTimes.push_back(root.userAverageDrying(root));
+        }
+        averageDryingTimes.push_back(root.userAverageDrying(root));
+        if(root.getRightChild() != nullptr)
+        {
+            tempSortedData = inorderTraversalDrying(*root.getRightChild());
+            for (int i = 0; i < tempSortedData.size(); i++)
+            {
+                averageDryingTimes.push_back(root.userAverageDrying(root));
+            }
+            return averageDryingTimes;
+        }
+        else
+        {
+            return averageDryingTimes;
+        }
+
+        
+    }
+    else if(root.getRightChild() != nullptr)
+    {
+        averageDryingTimes.push_back(root.userAverageDrying(root));
+        tempSortedData = inorderTraversalDrying(*root.getRightChild());
+        for (int i = 0; i < tempSortedData.size(); i++)
+        {
+            averageDryingTimes.push_back(tempSortedData.at(i));
+        }
+        
+        return averageDryingTimes;
+    }
+    else
+    {
+        //averageDryingTimes.push_back(root.getGator1ID()); ??don't understand purpose of this pushback
+        return averageDryingTimes;
+    }
+}
+
+double totalAverageDrying(AVLTree::UserNode root)
+{
+    vector<int> myVec= inorderTraversalDrying(root);
+    double avg;
+    for(int i=0;i<myVec.size();i++)
+    {
+        avg=avg+(myVec.at(i));
+    }
+
+    avg=avg/(myVec.size());
+    return avg;
+}
+
+int thresHolds()
+{
+
+    ///will code in after deciding on final threshold/data stuff
+}
+
+
+
+
+
 
 
 bool verifyInput(istringstream& nextLineOfUserInput)
@@ -1032,12 +1213,11 @@ bool verifyInput(istringstream& nextLineOfUserInput)
     return validInput;
 }
 
-
 void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, int NthRemoval)
     {
         if(command == "insert")
         {
-            tree->setRoot(insert(tree->getRoot(), ID, Name));
+            tree->setRoot(tree->insert(tree->getRoot(), ID, Name));
         }
         if(command == "remove")
         {
@@ -1051,11 +1231,11 @@ void executeRegularCommand(AVLTree* tree, string command, int ID, string Name, i
         {
             if(ID != -1)
             {
-                searchID(tree->getRoot(), ID);
+                tree->searchID(tree->getRoot(), ID);
             }
             else
             {
-                searchName(tree->getRoot(), Name);
+                tree->searchName(tree->getRoot(), Name);
             }
         }
     }
@@ -1064,22 +1244,21 @@ void executeEmptyCommand(AVLTree* tree, string command)
 {
     if(command == "printLevelCount")
     {
-        printLevelCount(tree->getRoot());
+        tree->printLevelCount(tree->getRoot());
     }
     if(command == "printInorder")
     {
-        printINOTraversal(tree->getRoot());
+        tree->printINOTraversal(tree->getRoot());
     }
     if(command == "printPreorder")
     {
-        printPRETraversal(tree->getRoot());
+        tree->printPRETraversal(tree->getRoot());
     }
     if(command == "printPostorder")
     {
-        printPOSTraversal(tree->getRoot());
+        tree->printPOSTraversal(tree->getRoot());
     }
 }
-
 
 void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput)
 {
