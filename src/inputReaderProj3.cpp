@@ -18,50 +18,57 @@ int yeet()
 {
     string input;
     cin >> input;
-     std::srand(static_cast<unsigned int>(std::time(nullptr))); 
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
     std::ifstream file(input);
     std::string str;
 
 
     while (std::getline(file, str))
     {
-        string name=" "+str;
+        string name = " " + str;
         string nameID;
         string nameRm;
         string namePhn;
-       nameID=nameID+name;
-        for (int count=0; count <= 7; count++)
+        nameID = nameID + name;
+        for (int count = 0; count <= 7; count++)
         {
-            
+
             int myRand = (rand() % 9);
-            nameID= to_string(myRand)+nameID;
-            
+            nameID = to_string(myRand) + nameID;
+
         }
-        nameID=nameID+" ";// 12345678 John Smith 
-        for (int count=0; count <= 2; count++)
+        nameID = nameID + " ";// 12345678 John Smith 
+        nameRm = nameID;
+        for (int count = 0; count <= 2; count++)
         {
-            
+
             int myRand = (rand() % 9);
-            nameRm= nameID+to_string(myRand);
-            
+            nameRm = nameRm + to_string(myRand);
+
         }
-        nameRm=nameRm+" ";//12345678 John Smith 123
-        for (int count=0; count <= 9; count++)
+        nameRm = nameRm + " ";//12345678 John Smith 123
+        namePhn = nameRm;
+        for (int count = 0; count <= 9; count++)
         {
             
             int myRand = (rand() % 9);
-            namePhn= nameRm+to_string(myRand);   //12345678 John Smith 123 1234567890        
+            namePhn = namePhn + to_string(myRand);   //12345678 John Smith 123 1234567890        
         }
 
 
 
-        outputFl<<namePhn<<endl;
-       
-        
+        outputFl << namePhn << endl;
+
+
     }
 
 
 
 
+    return 1;
+}
+int main()
+{
+    yeet();
     return 1;
 }
