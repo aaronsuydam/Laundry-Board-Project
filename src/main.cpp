@@ -87,11 +87,43 @@ int main()
                 cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
             }
             
-            
+            break;
         }
 
+        case 4:
+        {
+            //User average drying
 
+            //Get the gatorID of the user you want to find
+            int userToFind = commands.at(1);
 
+            //Get all of the nodes in the tree
+            vector<AVLTree::UserNode*> nodes = userTree.inorderTraversal(userTree.getRoot(), 0);
+            AVLTree::UserNode* userToCalc = nullptr;
+
+            //find the node that you want to calculate if it exists;
+            for (int i = 0; i < nodes.size(); i++)
+            {
+                if(nodes.at(i)->getGator1ID() == userToFind)
+                {
+                    userToCalc = nodes.at(i);
+                }
+            }
+            if(userToCalc != nullptr)
+            {
+                userToCalc->setDryAverage(userToCalc->userAverageDrying(userToCalc));
+            }
+            else
+            {
+                cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
+            }
+            break;
+        }
+        case 5:
+        {
+            thresHolds();
+            break;
+        }
 
         default:
             break;
