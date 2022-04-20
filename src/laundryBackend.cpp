@@ -1,3 +1,4 @@
+
 /* 
     Going to need the following types of information:
         User Variables:
@@ -23,7 +24,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <ctime>
 using namespace std;
 
 
@@ -72,6 +72,10 @@ class AVLTree
         //Sessions
         vector<Session> sessions;
 
+        //Averages
+        double avgWashTime;
+        double avgDryTime;
+
         //image variable if we decide to do a gui
         
         public:
@@ -86,6 +90,8 @@ class AVLTree
             NAME = "";
             phoneNumber = 0;
             roomNumber = 0;
+            avgDryTime = 0;
+            avgWashTime = 0;
             left = nullptr;
             right = nullptr;
         }
@@ -96,6 +102,8 @@ class AVLTree
             heightRight = 0;
             heightLeft = 0;
             balanceFactor = 0;
+            avgDryTime = 0;
+            avgWashTime = 0;
             NAME = givenNAME;
             left = nullptr;
             right = nullptr;
@@ -108,6 +116,8 @@ class AVLTree
             heightRight = 0;
             heightLeft = 0;
             balanceFactor = 0;
+            avgDryTime = 0;
+            avgWashTime = 0;
             NAME = givenNAME;
             left = nullptr;
             right = nullptr;
@@ -178,6 +188,16 @@ class AVLTree
             isRoot = isReallyRoot;
         }
 
+        void setWashAverage(double average)
+        {
+            avgWashTime = average;
+        }
+
+        void setDryAverage(double average)
+        {
+            avgDryTime = average;
+        }
+
         void addSession(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
         {
             Session toAdd(user, washerUsed, dryerUsed, washTime, dryTime);
@@ -245,17 +265,17 @@ class AVLTree
             return sessions.at(session);
         }
 
+        double getWashAverage()
+        {
+            return avgWashTime;
+        }
+
+        double getDryAverage()
+        {
+            return avgDryTime;
+        }
+
         //Caclulators
-
-        double userAverageWashing(UserNode* user)
-        {
-
-        }
-        double userAverageDrying(UserNode* user)
-        {
-
-        }
-
         int calculateBalanceFactor()
         {
             balanceFactor = heightLeft - heightRight;
@@ -291,9 +311,15 @@ class AVLTree
             }
         }
 
-        double userAverageWashing(UserNode user);
+        double userAverageWashing(UserNode* user)
+        {
 
-        double userAverageDrying(UserNode user);
+        }
+        double userAverageDrying(UserNode* user)
+        {
+
+        }
+
 
     };
 
@@ -339,32 +365,6 @@ class AVLTree
     {
         return this;
     }
-    void generate20Sesh(vector<UserNode> ugh)
-    {
-        srand( (unsigned)time( NULL ) );      
-        for(int i=0; i<ugh.size();i++)
-        {
-
-            string name=ugh.at(i).getNAME();
-            int washUsed=rand()%2; //1 for used
-            int dryUsed=rand()%2;
-            int washTime;
-            int dryTime;
-            if(washUsed==1)
-            {
-                washTime=(rand() % 24);                  
-            }
-            if(dryUsed==1)
-            {
-                dryTime=(rand() % 24);                               
-            }
-            for(int i=0; i<=19;i++)
-            {
-                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
-            }
-        }
-    }
-
     
     UserNode* insert(UserNode* root, int Gator1ID, string NAME);
     UserNode* insertHelper(UserNode* root, int Gator1ID, string NAME);
@@ -1113,11 +1113,31 @@ void AVLTree::printPOSTraversal(AVLTree::UserNode* root)
     }
     
 }
+    void generate20Sesh(vector<UserNode> ugh)
+    {
+        srand( (unsigned)time( NULL ) );      
+        for(int i=0; i<ugh.size();i++)
+        {
 
-
-
-
-
+            string name=ugh.at(i).getNAME();
+            int washUsed=rand()%2; //1 for used
+            int dryUsed=rand()%2;
+            int washTime;
+            int dryTime;
+            if(washUsed==1)
+            {
+                washTime=(rand() % 24);                  
+            }
+            if(dryUsed==1)
+            {
+                dryTime=(rand() % 24);                               
+            }
+            for(int i=0; i<=19;i++)
+            {
+                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
+            }
+        }
+    }
 
 double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode* user)
 {
@@ -1137,6 +1157,7 @@ double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode* user)
     averageTime =(averageTime/size);
     return averageTime;
 }
+
 double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode* user)
 {
     //1 washer 2 dryer
@@ -1287,6 +1308,9 @@ double totalAverageDrying(AVLTree::UserNode* root)
 }
 
 
+
+
+
 bool verifyInput(istringstream& nextLineOfUserInput)
 {
     bool validInput = true;
@@ -1412,3 +1436,6 @@ void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput)
         executeRegularCommand(tree, command, ID, Name, removeNthNode);         
     } 
 }
+
+
+
