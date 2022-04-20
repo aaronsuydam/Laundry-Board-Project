@@ -311,14 +311,8 @@ class AVLTree
             }
         }
 
-        double userAverageWashing(UserNode* user)
-        {
-
-        }
-        double userAverageDrying(UserNode* user)
-        {
-
-        }
+        double userAverageWashing(UserNode* user);
+        double userAverageDrying(UserNode* user);
 
 
     };
@@ -400,6 +394,8 @@ class AVLTree
     int getLevels(UserNode* root);
 
     void printLevelCount(UserNode* root);
+
+    void generate20Sesh(vector<AVLTree::UserNode> ugh);
 
     private:
     UserNode* root;
@@ -1113,7 +1109,8 @@ void AVLTree::printPOSTraversal(AVLTree::UserNode* root)
     }
     
 }
-    void generate20Sesh(vector<UserNode> ugh)
+
+void AVLTree::generate20Sesh(vector<AVLTree::UserNode> ugh)
     {
         srand( (unsigned)time( NULL ) );      
         for(int i=0; i<ugh.size();i++)
@@ -1183,7 +1180,6 @@ double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode* user)
 
 }
 
-
 vector<int> inorderTraversalWashingTimes(AVLTree::UserNode* root)
 {
     vector<int> averageWashingTimes;
@@ -1230,7 +1226,6 @@ vector<int> inorderTraversalWashingTimes(AVLTree::UserNode* root)
     }
 }
 
-
 double totalAverageWashing(AVLTree::UserNode* root)
 {
    vector<int> myVec= inorderTraversalWashingTimes(root);
@@ -1243,9 +1238,6 @@ double totalAverageWashing(AVLTree::UserNode* root)
    avg=avg/(myVec.size());
     return avg;
 }
-
-
-
 
 vector<int> inorderTraversalDrying(AVLTree::UserNode* root)
 {
@@ -1292,7 +1284,6 @@ vector<int> inorderTraversalDrying(AVLTree::UserNode* root)
         return averageDryingTimes;
     }
 }
-
 
 double totalAverageDrying(AVLTree::UserNode* root)
 {

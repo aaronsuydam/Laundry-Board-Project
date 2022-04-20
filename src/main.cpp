@@ -7,6 +7,12 @@
 #include <map>
 using namespace std;
 
+
+void thresHolds(vector<int>, vector<int>);
+vector<int> comprehend(string userInput);
+
+
+
 int main()
 {
     //Read in the users file
@@ -53,12 +59,12 @@ int main()
         {
         case 1:
         {
-            info.at(0) = totalAverageWashing(*userTree.getRoot());
+            info.at(0) = totalAverageWashing(userTree.getRoot());
             break;
         }
         case 2:
         {
-            info.at(1) = totalAverageDrying(*userTree.getRoot());
+            info.at(1) = totalAverageDrying(userTree.getRoot());
             break;
         }
         case 3:
@@ -123,7 +129,10 @@ int main()
         }
         case 5:
         {
-            thresHolds();
+            vector<int> washingTimes = inorderTraversalWashingTimes(userTree.getRoot());
+            vector<int> dryingTimes = inorderTraversalDrying(userTree.getRoot());
+
+            thresHolds(washingTimes, dryingTimes);
             break;
         }
 
@@ -176,10 +185,7 @@ vector<int> comprehend(string userInput)
 
 }
 
-void thresHolds(vector<double>, vector<double>);
-
-
-void thresHolds(vector<double> washing, vector<double> drying)
+void thresHolds(vector<int> washing, vector<int> drying)
 {
       ///24 hours ==bad
     //Green 2 hrs
