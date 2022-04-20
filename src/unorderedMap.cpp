@@ -1,21 +1,4 @@
-/*
-ok so
 
-need a way to represent a blob of users in a map
-so 
-users need to have 
-    Name
-    GatorID
-    phone
-    room
-
-    average washing
-    average drying
-
-    vector<sessions>
-
-
-*/
 #include <string>
 #include <vector>
 #include <unordered_map>

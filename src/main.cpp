@@ -1,3 +1,4 @@
+#pragma once
 #include "laundryBackend.cpp"
 #include <iostream>
 #include <regex>
@@ -187,7 +188,7 @@ vector<int> comprehend(string userInput)
 
 void thresHolds(vector<int> washing, vector<int> drying)
 {
-      ///24 hours ==bad
+    ///24 hours ==bad
     //Green 2 hrs
     //Yellow 4 hrs
     //Red >4 hrs
