@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <ctime>
 using namespace std;
 
 
@@ -245,6 +246,16 @@ class AVLTree
         }
 
         //Caclulators
+
+        double userAverageWashing(UserNode* user)
+        {
+
+        }
+        double userAverageDrying(UserNode* user)
+        {
+
+        }
+
         int calculateBalanceFactor()
         {
             balanceFactor = heightLeft - heightRight;
@@ -328,6 +339,32 @@ class AVLTree
     {
         return this;
     }
+    void generate20Sesh(vector<UserNode> ugh)
+    {
+        srand( (unsigned)time( NULL ) );      
+        for(int i=0; i<ugh.size();i++)
+        {
+
+            string name=ugh.at(i).getNAME();
+            int washUsed=rand()%2; //1 for used
+            int dryUsed=rand()%2;
+            int washTime;
+            int dryTime;
+            if(washUsed==1)
+            {
+                washTime=(rand() % 24);                  
+            }
+            if(dryUsed==1)
+            {
+                dryTime=(rand() % 24);                               
+            }
+            for(int i=0; i<=19;i++)
+            {
+                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
+            }
+        }
+    }
+
     
     UserNode* insert(UserNode* root, int Gator1ID, string NAME);
     UserNode* insertHelper(UserNode* root, int Gator1ID, string NAME);
@@ -1082,61 +1119,68 @@ void AVLTree::printPOSTraversal(AVLTree::UserNode* root)
 
 
 
-double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode user)
+double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode* user)
 {
     //1 washer 2 dryer
     double averageTime;
-    vector<Session> myvec=user.sessions;
+    vector<Session> myvec=user->sessions;
     double size;
-    for(int i=0; i<user.sessions.size(); i++)
+    for(int i=0; i<user->sessions.size(); i++)
     {
-        Session mysesh= user.getSession(i);
+        Session mysesh= user->getSession(i);
         if(mysesh.machinesUsed[i]==1)
         {
-            averageTime= averageTime + (mysesh.times[i]);
-            size++;
+        averageTime= averageTime + (mysesh.times[i]);
+        size++;
         }
     }
     averageTime =(averageTime/size);
     return averageTime;
 }
-double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode user)
+double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode* user)
 {
     //1 washer 2 dryer
     double averageTime;
-    vector<Session> myvec=user.sessions;
+    vector<Session> myvec=user->sessions;
     double size;
-    for(int i=0; i<user.sessions.size(); i++)
+    for(int i=0; i<user->sessions.size(); i++)
     {
-        Session mysesh= user.getSession(i);
+        Session mysesh= user->getSession(i);
         if(mysesh.machinesUsed[i]==2)
         {
         averageTime= averageTime + (mysesh.times[i]);
         size++;
         }
     }
-    averageTime = (averageTime/size);
+
+    averageTime =(averageTime/size);
+
+
     return averageTime;
+
+
+
 }
 
-vector<int> inorderTraversalWashingTimes(AVLTree::UserNode root)
+
+vector<int> inorderTraversalWashingTimes(AVLTree::UserNode* root)
 {
     vector<int> averageWashingTimes;
     vector<int> tempSortedData;
-    if(root.getLeftChild() != nullptr)
+    if(root->getLeftChild() != nullptr)
     {
-        tempSortedData = inorderTraversalWashingTimes(*root.getLeftChild());
+        tempSortedData = inorderTraversalWashingTimes(root->getLeftChild());
         for (int i = 0; i < tempSortedData.size(); i++)
         {
-            averageWashingTimes.push_back(root.userAverageWashing(root));
+            averageWashingTimes.push_back(root->userAverageWashing(root));
         }
-        averageWashingTimes.push_back(root.userAverageWashing(root));
-        if(root.getRightChild() != nullptr)
+        averageWashingTimes.push_back(root->userAverageWashing(root));
+        if(root->getRightChild() != nullptr)
         {
-            tempSortedData = inorderTraversalWashingTimes(*root.getRightChild());
+            tempSortedData = inorderTraversalWashingTimes(root->getRightChild());
             for (int i = 0; i < tempSortedData.size(); i++)
             {
-                averageWashingTimes.push_back(root.userAverageWashing(root));
+                averageWashingTimes.push_back(root->userAverageWashing(root));
             }
             return averageWashingTimes;
         }
@@ -1147,10 +1191,10 @@ vector<int> inorderTraversalWashingTimes(AVLTree::UserNode root)
 
         
     }
-    else if(root.getRightChild() != nullptr)
+    else if(root->getRightChild() != nullptr)
     {
-        averageWashingTimes.push_back(root.userAverageWashing(root));
-        tempSortedData = inorderTraversalWashingTimes(*root.getRightChild());
+        averageWashingTimes.push_back(root->userAverageWashing(root));
+        tempSortedData = inorderTraversalWashingTimes(root->getRightChild());
         for (int i = 0; i < tempSortedData.size(); i++)
         {
             averageWashingTimes.push_back(tempSortedData.at(i));
@@ -1165,37 +1209,41 @@ vector<int> inorderTraversalWashingTimes(AVLTree::UserNode root)
     }
 }
 
-double totalAverageWashing(AVLTree::UserNode root)
-{
-    vector<int> myVec= inorderTraversalWashingTimes(root);
-    double avg;
-    for(int i=0;i<myVec.size();i++)
-    {
-        avg=avg+(myVec.at(i));
-    }
 
-    avg=avg/(myVec.size());
+double totalAverageWashing(AVLTree::UserNode* root)
+{
+   vector<int> myVec= inorderTraversalWashingTimes(root);
+    double avg;
+   for(int i=0;i<myVec.size();i++)
+   {
+       avg=avg+(myVec.at(i));
+   }
+
+   avg=avg/(myVec.size());
     return avg;
 }
 
-vector<int> inorderTraversalDrying(AVLTree::UserNode root)
+
+
+
+vector<int> inorderTraversalDrying(AVLTree::UserNode* root)
 {
     vector<int> averageDryingTimes;
     vector<int> tempSortedData;
-    if(root.getLeftChild() != nullptr)
+    if(root->getLeftChild() != nullptr)
     {
-        tempSortedData = inorderTraversalDrying(*root.getLeftChild());
+        tempSortedData = inorderTraversalDrying(root->getLeftChild());
         for (int i = 0; i < tempSortedData.size(); i++)
         {
-            averageDryingTimes.push_back(root.userAverageDrying(root));
+            averageDryingTimes.push_back(root->userAverageDrying(root));
         }
-        averageDryingTimes.push_back(root.userAverageDrying(root));
-        if(root.getRightChild() != nullptr)
+        averageDryingTimes.push_back(root->userAverageDrying(root));
+        if(root->getRightChild() != nullptr)
         {
-            tempSortedData = inorderTraversalDrying(*root.getRightChild());
+            tempSortedData = inorderTraversalDrying(root->getRightChild());
             for (int i = 0; i < tempSortedData.size(); i++)
             {
-                averageDryingTimes.push_back(root.userAverageDrying(root));
+                averageDryingTimes.push_back(root->userAverageDrying(root));
             }
             return averageDryingTimes;
         }
@@ -1206,10 +1254,10 @@ vector<int> inorderTraversalDrying(AVLTree::UserNode root)
 
         
     }
-    else if(root.getRightChild() != nullptr)
+    else if(root->getRightChild() != nullptr)
     {
-        averageDryingTimes.push_back(root.userAverageDrying(root));
-        tempSortedData = inorderTraversalDrying(*root.getRightChild());
+        averageDryingTimes.push_back(root->userAverageDrying(root));
+        tempSortedData = inorderTraversalDrying(root->getRightChild());
         for (int i = 0; i < tempSortedData.size(); i++)
         {
             averageDryingTimes.push_back(tempSortedData.at(i));
@@ -1224,29 +1272,19 @@ vector<int> inorderTraversalDrying(AVLTree::UserNode root)
     }
 }
 
-double totalAverageDrying(AVLTree::UserNode root)
-{
-    vector<int> myVec= inorderTraversalDrying(root);
-    double avg;
-    for(int i=0;i<myVec.size();i++)
-    {
-        avg=avg+(myVec.at(i));
-    }
 
-    avg=avg/(myVec.size());
+double totalAverageDrying(AVLTree::UserNode* root)
+{
+   vector<int> myVec= inorderTraversalDrying(root);
+    double avg;
+   for(int i=0;i<myVec.size();i++)
+   {
+       avg=avg+(myVec.at(i));
+   }
+
+   avg=avg/(myVec.size());
     return avg;
 }
-
-int thresHolds()
-{
-
-    ///will code in after deciding on final threshold/data stuff
-}
-
-
-
-
-
 
 
 bool verifyInput(istringstream& nextLineOfUserInput)
@@ -1374,7 +1412,3 @@ void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput)
         executeRegularCommand(tree, command, ID, Name, removeNthNode);         
     } 
 }
-
-
-
-
