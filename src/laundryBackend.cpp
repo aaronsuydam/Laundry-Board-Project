@@ -591,9 +591,7 @@ vector<int> AVLTree::inorderTraversal(AVLTree::UserNode* root)
         else
         {
             return sortedData;
-        }
-
-        
+        }   
     }
     else if(root->getRightChild() != nullptr)
     {

@@ -18,8 +18,7 @@ int main()
 {
     //Read in the users file
 
-    string path = "";
-    cin >> path;
+    string path = "C:\\Users\\suyda\\GitHub\\Laundry-Board-Project\\src\\fullInput.txt";
     ifstream inputFile(path);
 
     int n = 0;
@@ -28,23 +27,27 @@ int main()
     for (int i = 0; i < n; i++)
     {
         // read in the next line and parse it into a constructor for a user node
-        string name = "";
+        string firstName = "";
+        string lastName = "";
+        string fullName = "";
         string phone = "";
         string gatorID = "";
         string roomNum = "";
 
         inputFile >> gatorID;
-        inputFile >> name;
+        inputFile >> firstName;
+        inputFile >> lastName;
         inputFile >> roomNum;
         inputFile >> phone;
 
         int gator1ID = stoi(gatorID);
         int roomNumber = stoi(roomNum);
-        int phoneNum = stoi(phone);
-
+        long phoneNum = 0;
+        fullName = firstName + " " + lastName;
         
         // push that to the tree
-        userTree.insertFromFile(userTree.getRoot(), gator1ID, name, phoneNum, roomNumber);
+        userTree.setRoot(userTree.insertFromFile(userTree.getRoot(), gator1ID, fullName, phoneNum, roomNumber));
+        
     }
 
     //Main Variables
@@ -130,6 +133,7 @@ int main()
         }
         case 5:
         {
+            vector<int> stuff = userTree.inorderTraversal(userTree.getRoot());
             vector<int> washingTimes = inorderTraversalWashingTimes(userTree.getRoot());
             vector<int> dryingTimes = inorderTraversalDrying(userTree.getRoot());
 
@@ -144,14 +148,6 @@ int main()
 
 
     }
-
-
-    
-
-
-
-//Run the algorithms
-
     return 0;
 }
 
