@@ -1,13 +1,15 @@
-#include "laundryBackend.cpp"
-#include <iostream>
+#include "Gator AVL.cpp"
+#include "iostream"
 #include <regex>
 #include <string>
-#include <fstream>
 using namespace std;
+
+void thresHolds(vector<double>, vector<double>);
+
+
 
 int main()
 {
-    /*
     //Main Variables
     stringstream userInputString;
 
@@ -39,48 +41,67 @@ int main()
             cout << "unsuccessful" << endl;
         }
     }
-*/
-
-//Read in the users file
-
-string path = "";
-cin >> path;
-ifstream inputFile(path);
-
-int n = 0;
-inputFile >> n;
-
-for (int i = 0; i < n; i++)
-{
-    // read in the next line and parse it into a constructor for a user node
-    string name = "";
-    string phone = "";
-    string gatorID = "";
-    string roomNum = "";
-
-    inputFile >> gatorID;
-    inputFile >> name;
-    inputFile >> roomNum;
-    inputFile >> phone;
-
-    int gator1ID = stoi(gatorID);
-    int roomNumber = stoi(roomNum);
-    int phoneNum = stoi(phone);
-
-    AVLTree userTree;
-    // push that to the tree
-    userTree.insertFromFile(userTree.getRoot(), gator1ID, name, phoneNum, roomNumber);
+    return 0;
 }
 
+void thresHolds(vector<double> washing, vector<double> drying)
+{
+      ///24 hours ==bad
+    //Green 2 hrs
+    //Yellow 4 hrs
+    //Red >4 hrs
+    double dryingT, washingT;
+    for(int i=0; i<washing.size();i++)
+    {
+        dryingT=dryingT+washing.at(i);
+    }
+    for(int i=0; i<drying.size();i++)
+    {
+        washingT=washingT+drying.at(i);
+    }
+    double avg= (dryingT+washingT)/(washing.size()+drying.size());
+    //drying
+    if(dryingT<=2.0)
+    {
+        cout<<"Total Average Dryer use time is within GREEN threshold";
+    }
+    if(dryingT>2.0&&dryingT<=4.0)
+    {
+        cout<<"Total Average Dryer use time is within YELLOW threshold";
+    }
+    if(dryingT>4.0)
+    {
+        cout<<"Total Average Dryer use time is within RED threshold";
+    }
+    //washing
+    if(washingT<=2.0)
+    {
+        cout<<"Total Average Washing use time is within GREEN threshold";
+    }
+    if(washingT>2.0&&washingT<=4.0)
+    {
+        cout<<"Total Average Washing use time is within YELLOW threshold";
+    }
+    if(washingT>4.0)
+    {
+        cout<<"Total Average Washing use time is within RED threshold";
+    }
 
-//Run the algorithms
+
+    if(avg<=2.0)
+    {
+        cout<<"Total Average use time is within GREEN threshold";
+    }
+    if(avg>2.0&&avg<=4.0)
+    {
+        cout<<"Total Average use time is within YELLOW threshold";
+    }
+    if(avg>4.0)
+    {
+        cout<<"Total Average use time is within RED threshold";
+    }
+    
 
 
-
-
-
-
-
-
-    return 0;
+    ///will code in after deciding on final threshold/data stuff
 }
