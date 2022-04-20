@@ -83,12 +83,25 @@ class AVLTree
             balanceFactor = 0;
             isRoot = false;
             NAME = "";
-            
+            phoneNumber = 0;
+            roomNumber = 0;
             left = nullptr;
             right = nullptr;
         }
 
         UserNode(int inputGator1ID, string givenNAME)
+        {
+            Gator1ID = inputGator1ID;
+            heightRight = 0;
+            heightLeft = 0;
+            balanceFactor = 0;
+            NAME = givenNAME;
+            left = nullptr;
+            right = nullptr;
+            isRoot = false;
+        }
+
+        UserNode(int inputGator1ID, string givenNAME, int phone, int room)
         {
             Gator1ID = inputGator1ID;
             heightRight = 0;
@@ -319,6 +332,9 @@ class AVLTree
     UserNode* insert(UserNode* root, int Gator1ID, string NAME);
     UserNode* insertHelper(UserNode* root, int Gator1ID, string NAME);
 
+    UserNode* insertFromFile(UserNode* root, int Gator1ID, string NAME, int phone, int room);
+    UserNode* insertHelper(UserNode* root, int Gator1ID, string NAME, int phone, int room);
+
     UserNode* balanceNodes(UserNode* balancingNode);
 
     vector<int> inorderTraversal(UserNode* root);
@@ -389,7 +405,6 @@ AVLTree::UserNode* AVLTree::insert(AVLTree::UserNode* root, int Gator1ID, string
     }
 }
 
-
 AVLTree::UserNode* AVLTree::insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME)
 {
     if(root == nullptr)
@@ -411,18 +426,57 @@ AVLTree::UserNode* AVLTree::insertHelper(AVLTree::UserNode* root, int Gator1ID, 
             root->calcHeight(root, 0);
             root = balanceNodes(root);
         }
+        return root;
+    }
+}
 
-        /*if(root->getRoot() == true) Determines success or failure of the insertion
+
+AVLTree::UserNode* AVLTree::insertFromFile(AVLTree::UserNode* root, int Gator1ID, string NAME, int phone, int room)
+{
+    bool preexisting = searchIDBool(root, Gator1ID);
+    if(preexisting)
+    {
+        cout << "unsuccessful" << endl;
+        return root;
+    }
+    else
+    {
+        AVLTree::UserNode* nodeToReturn = insertHelper(root, Gator1ID, NAME, phone, room);
+        bool found = searchIDBool(nodeToReturn, Gator1ID);
+        if(found)
         {
-            if(boolSearched(Gator1ID))
-            {
-                cout << "successful" << endl;
-            }
-            else
-            {
-                cout << "unsucessful" << endl;
-            }
-        }*/
+            cout << "successful" << endl;
+            return nodeToReturn;
+        }
+        else
+        {
+            cout << "unsuccessful" << endl;
+            return nodeToReturn;
+        }
+    }
+}
+
+AVLTree::UserNode* AVLTree::insertHelper(AVLTree::UserNode* root, int Gator1ID, string NAME, int phone, int room)
+{
+    if(root == nullptr)
+    {
+        AVLTree::UserNode* newStudentRoot = new AVLTree::UserNode(Gator1ID, NAME, phone, room);
+        return newStudentRoot;
+    }
+    else
+    {
+        if(Gator1ID > root->getGator1ID())
+        {
+            root->setRightChild(insertHelper(root->getRightChild(), Gator1ID, NAME));
+            root->calcHeight(root, 0);
+            root = balanceNodes(root);
+        }
+        else if(Gator1ID < root->getGator1ID())
+        {
+            root->setLeftChild(insertHelper(root->getLeftChild(), Gator1ID, NAME));
+            root->calcHeight(root, 0);
+            root = balanceNodes(root);
+        }
         return root;
     }
 }
@@ -497,7 +551,8 @@ AVLTree::UserNode* AVLTree::balanceNodes(AVLTree::UserNode* balancingNode)
     }
 }
 
-//  THIS WORKED FIRST TRY!!!!!!! MMMMMMMMMMMHMMMMMMM LES GOOOOOOOOOOOO
+
+//THIS WORKED FIRST TRY!!!!!!! MMMMMMMMMMMHMMMMMMM LES GOOOOOOOOOOOO
 vector<int> AVLTree::inorderTraversal(AVLTree::UserNode* root)
 {
     vector<int> sortedData;

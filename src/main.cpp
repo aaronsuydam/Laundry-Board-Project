@@ -1,11 +1,13 @@
 #include "laundryBackend.cpp"
-#include "iostream"
+#include <iostream>
 #include <regex>
 #include <string>
+#include <fstream>
 using namespace std;
-    
+
 int main()
 {
+    /*
     //Main Variables
     stringstream userInputString;
 
@@ -37,5 +39,48 @@ int main()
             cout << "unsuccessful" << endl;
         }
     }
+*/
+
+//Read in the users file
+
+string path = "";
+cin >> path;
+ifstream inputFile(path);
+
+int n = 0;
+inputFile >> n;
+
+for (int i = 0; i < n; i++)
+{
+    // read in the next line and parse it into a constructor for a user node
+    string name = "";
+    string phone = "";
+    string gatorID = "";
+    string roomNum = "";
+
+    inputFile >> gatorID;
+    inputFile >> name;
+    inputFile >> roomNum;
+    inputFile >> phone;
+
+    int gator1ID = stoi(gatorID);
+    int roomNumber = stoi(roomNum);
+    int phoneNum = stoi(phone);
+
+    AVLTree userTree;
+    // push that to the tree
+    userTree.insertFromFile(userTree.getRoot(), gator1ID, name, phoneNum, roomNumber);
+}
+
+
+//Run the algorithms
+
+
+
+
+
+
+
+
     return 0;
 }
