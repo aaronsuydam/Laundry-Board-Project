@@ -184,6 +184,7 @@ vector<int> comprehend(string userInput)
         return {5};
     }
 
+    return {};
 }
 
 void thresHolds(vector<int> washing, vector<int> drying)

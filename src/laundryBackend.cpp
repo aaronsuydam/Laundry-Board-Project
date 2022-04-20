@@ -562,6 +562,7 @@ AVLTree::UserNode* AVLTree::balanceNodes(AVLTree::UserNode* balancingNode)
     {
         return balancingNode;
     }
+    return nullptr;
 }
 
 
