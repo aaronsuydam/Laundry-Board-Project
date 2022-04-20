@@ -62,10 +62,15 @@ int main()
         case 3:
         {
             //User average washing
-            int userToFind = commands.at(1);
-            vector<AVLTree::UserNode*> nodes = userTree.inorderTraversal(userTree.getRoot(), 0);
-            AVLTree::UserNode* userToCalc;
 
+            //Get the gatorID of the user you want to find
+            int userToFind = commands.at(1);
+
+            //Get all of the nodes in the tree
+            vector<AVLTree::UserNode*> nodes = userTree.inorderTraversal(userTree.getRoot(), 0);
+            AVLTree::UserNode* userToCalc = nullptr;
+
+            //find the node that you want to calculate if it exists;
             for (int i = 0; i < nodes.size(); i++)
             {
                 if(nodes.at(i)->getGator1ID() == userToFind)
@@ -73,8 +78,15 @@ int main()
                     userToCalc = nodes.at(i);
                 }
             }
-
-            userToCalc->userAverageWashing(userToCalc);
+            if(userToCalc != nullptr)
+            {
+                userToCalc->setWashAverage(userToCalc->userAverageWashing(userToCalc));
+            }
+            else
+            {
+                cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
+            }
+            
             
         }
 
