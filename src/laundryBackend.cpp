@@ -1813,8 +1813,8 @@ class MapImplementation
 
         void addSession(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
         {
-            Session toAdd(user, washerUsed, dryerUsed, washTime, dryTime);
-            sessions.push_back(toAdd);
+            Session* toAdd = new Session(user, washerUsed, dryerUsed, washTime, dryTime);
+            sessions.push_back(*toAdd);
         }
 
         //Getters
@@ -1928,7 +1928,7 @@ class MapImplementation
             {
                 dryTime=(rand() % 24);                               
             }
-            for(int i=0; i<=19;i++)
+            for(int j=0; j<=19;j++)
             {
                     userVector.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
