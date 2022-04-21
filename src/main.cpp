@@ -25,7 +25,7 @@ int main()
     inputFile >> n;
     //AVLTree laundryTree;
     MapImplementation laundryMap;
-    //SetImplementation laundrySet;
+    SetImplementation laundrySet;
     for (int i = 0; i < n; i++)
     {
         // read in the next line and parse it into a constructor for a user node
@@ -55,9 +55,8 @@ int main()
         laundryMap.map.emplace(gator1ID, newMapUser);
 
         // push that to the set
-       // SetImplementation::SetUser newSetUser(gator1ID, fullName, phoneNum, roomNum);
-       // laundrySet.mset.emplace(i, newSetUser);
-
+        SetImplementation::SetUser newSetUser(gator1ID, fullName, phoneNum, roomNum);
+        laundrySet.mset.insert(newSetUser);
         
     }
 
@@ -78,15 +77,26 @@ int main()
         case 1:
         {
             //AVLInfo.at(0) = totalAverageWashing(laundryTree.getRoot());
+            cout << "Total average washing time for all users:" << endl;
+            cout << "Map-based: ";
             mapInfo.at(0) = laundryMap.totalAverageWashing();
-           // setInfo.at(0) = laundrySet.totalAverageWashing();
+            cout << mapInfo.at(0) << endl;
+            cout << "Set-based: ";
+            setInfo.at(0) = laundrySet.totalAverageWashing();
+            cout << setInfo.at(0) << endl;
             break;
         }
         case 2:
         {
             //AVLInfo.at(1) = totalAverageDrying(laundryTree.getRoot());
-            mapInfo.at(1) = laundryMap.totalAverageDrying();
-            //setInfo.at(1) = laundrySet.totalAverageDrying();
+            //AVLInfo.at(0) = totalAverageWashing(laundryTree.getRoot());
+            cout << "Total average drying time for all users:" << endl;
+            cout << "Map-based: ";
+            mapInfo.at(0) = laundryMap.totalAverageDrying();
+            cout << mapInfo.at(1) << endl;
+            cout << "Set-based: ";
+            setInfo.at(0) = laundrySet.totalAverageDrying();
+            cout << setInfo.at(1) << endl;
             break;
         }
         case 3:
@@ -105,43 +115,50 @@ int main()
             vector<MapImplementation::MapUser> toAddSessionsTo = {mapUserToCalc};
             laundryMap.generate20Sesh(toAddSessionsTo);
             mapUserToCalc = toAddSessionsTo.at(0);
-            int thisUserAverageWash = mapUserToCalc.userAverageWashing();
-            cout << thisUserAverageWash;
+            int mapUserAverageWash = mapUserToCalc.userAverageWashing();
+            int setUserAverageWash = 0;
+            
+            vector<SetImplementation::SetUser> setUsers = laundrySet.generateSetVector();
+            SetImplementation::SetUser* setUserToCalc;
             //Get all of the nodes in the set
             //vector<SetImplementation::SetUser*> setUsers = laundrySet.generateSetVector();
             //SetImplementation::SetUser* setUserToCalc = nullptr;
-            /*for (int i = 0; i < setUsers.size(); i++)
+            for (int i = 0; i < setUsers.size(); i++)
             {
-                if(setUsers.at(i)->getGator1ID() == userToFind)
+                if(setUsers.at(i).getGator1ID() == userToFind)
                 {
-                    setUserToCalc = setUsers.at(i);
+                    setUserToCalc = &setUsers.at(i);
                 }
             }
             if(setUserToCalc != nullptr)
             {
-                setUserToCalc->setWashAverage(setUserToCalc->userAverageWashing());
+                setUserAverageWash = setUserToCalc->userAverageWashing();
+            }
+            else
+            {
+                cout << "Error: Set User Not Found" <<endl;
+            }
+
+            cout << "Average Wash Time for User: " << userToFind << endl;
+            cout << "Map-based: " << mapUserAverageWash << endl;
+            cout << "Set-based: " << setUserAverageWash << endl;
+
+            /*find the node that you want to calculate if it exists;
+            for (int i = 0; i < nodes.size(); i++)
+            {
+                if(nodes.at(i)->getGator1ID() == userToFind)
+                {
+                    avlUserToCalc = nodes.at(i);
+                }
+            }
+            if(avlUserToCalc != nullptr)
+            {
+                avlUserToCalc->setWashAverage(avlUserToCalc->userAverageWashing(avlUserToCalc));
             }
             else
             {
                 cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
             }*/
-
-            //find the node that you want to calculate if it exists;
-            // for (int i = 0; i < nodes.size(); i++)
-            // {
-            //     if(nodes.at(i)->getGator1ID() == userToFind)
-            //     {
-            //         avlUserToCalc = nodes.at(i);
-            //     }
-            // }
-            // if(avlUserToCalc != nullptr)
-            // {
-            //     avlUserToCalc->setWashAverage(avlUserToCalc->userAverageWashing(avlUserToCalc));
-            // }
-            // else
-            // {
-            //     cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
-            // }
             
             break;
         }
@@ -153,35 +170,36 @@ int main()
             //Get the gatorID of the user you want to find
             int userToFind = commands.at(1);
 
-            //Get all of the nodes in the tree
-            //vector<AVLTree::UserNode*> nodes = laundryTree.inorderTraversal(laundryTree.getRoot(), 0);
-            //AVLTree::UserNode* avlUserToCalc = nullptr;
-
             //get all of the nodes in the map
             MapImplementation::MapUser mapUserToCalc = laundryMap.map.at(userToFind);
             vector<MapImplementation::MapUser> toAddSessionsTo = {mapUserToCalc};
             laundryMap.generate20Sesh(toAddSessionsTo);
             mapUserToCalc = toAddSessionsTo.at(0);
-            int thisUserAverageDry = mapUserToCalc.userAverageDrying();
-            cout << thisUserAverageDry;
+            int mapUserAverageDry = mapUserToCalc.userAverageDrying();
+            
             //Get all of the nodes in the set
-            //vector<SetImplementation::SetUser*> setUsers = laundrySet.generateSetVector();
-            /*SetImplementation::SetUser* setUserToCalc = nullptr;
+            vector<SetImplementation::SetUser> setUsers = laundrySet.generateSetVector();
+            SetImplementation::SetUser* setUserToCalc;
+            int setUserAverageDry = 0;
             for (int i = 0; i < setUsers.size(); i++)
             {
-                if(setUsers.at(i)->getGator1ID() == userToFind)
+                if(setUsers.at(i).getGator1ID() == userToFind)
                 {
-                    setUserToCalc = setUsers.at(i);
+                    setUserToCalc = &setUsers.at(i);
                 }
             }
             if(setUserToCalc != nullptr)
             {
-                setUserToCalc->setWashAverage(setUserToCalc->userAverageWashing());
+                setUserAverageDry = setUserToCalc->userAverageWashing();
             }
             else
             {
-                cout << "ERRRIRRRAGJKRGkenrgvabjlaejlaj" <<endl;
-            }*/
+                cout << "Error: Set User Not Found" <<endl;
+            }
+
+            cout << "Average Dry Time for User: " << userToFind << endl;
+            cout << "Map-based: " << mapUserAverageDry << endl;
+            cout << "Set-based: " << setUserAverageDry << endl;
 
 
             //find the node that you want to calculate if it exists;

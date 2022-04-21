@@ -1,25 +1,3 @@
-
-/* 
-    Going to need the following types of information:
-        User Variables:
-            Principle identifier: 
-                Gator ID
-            Metadata:
-                Name
-                Room Number
-                Phone Number
-                UF Email
-                Photo
-        Linked (Calculated) Variables
-            Number and which washers/dryers in use, and by whom, and for how long (map?);
-        Machine Variables:
-            Type Segregation: Washer/Dryer
-            Machine Number
-            Status: In use/Free/Out of Order
-        
-        Going to use Aaron's Code, will modify Andrew's removal methods as newvessary.
-*/
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -1439,8 +1417,6 @@ void parseCommand(AVLTree* tree, istringstream& nextLineOfUserInput)
 
 class SetImplementation
 {
-
-    
     public:
     class SetUser
     {
@@ -1470,7 +1446,7 @@ class SetImplementation
             avgWashTime = 0;
         }
 
-       SetUser(int inputGator1ID, string givenNAME)
+        SetUser(int inputGator1ID, string givenNAME)
         {
             Gator1ID = inputGator1ID;
             NAME = givenNAME;
@@ -1491,7 +1467,11 @@ class SetImplementation
             avgWashTime = 0;
             
         }
+        
+        SetUser(int &, SetImplementation::SetUser*&)
+        {
 
+        }
 
         //Setters
         void setGator1ID(int newGator1ID)
@@ -1531,14 +1511,23 @@ class SetImplementation
 
         void addSession(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
         {
-            Session toAdd(user, washerUsed, dryerUsed, washTime, dryTime);
-            sessions.push_back(toAdd);
+            Session* toAdd = new Session(user, washerUsed, dryerUsed, washTime, dryTime);
+            sessions.push_back(*toAdd);
         }
 
-       bool operator<(const SetImplementation::SetUser) 
-       {
-           return false;
-       }
+        bool operator<(const SetImplementation::SetUser & rhs) const
+        {
+            //compare based on gator id
+            if(this->Gator1ID < rhs.Gator1ID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
         
 
 
@@ -1591,11 +1580,10 @@ class SetImplementation
             double size = 20;
             for(int i=0; i<sessions.size(); i++)
             {
-                Session mysesh = getSession(i);
-                if(mysesh.machinesUsed[i]==1)
+                Session mysesh = sessions.at(i);
+                if(mysesh.machinesUsed[0]==1)
                 {
-                averageTime= averageTime + (mysesh.times[i]);
-                size++;
+                    averageTime= averageTime + (mysesh.times[0]);
                 }
             }
             averageTime =(averageTime/size);
@@ -1609,48 +1597,53 @@ class SetImplementation
             double size = 20;
             for(int i=0; i<sessions.size(); i++)
             {
-                Session mysesh= getSession(i);
-                if(mysesh.machinesUsed[i]==2)
+                Session mysesh = sessions.at(i);
+                if(mysesh.machinesUsed[1]==1)
                 {
-                averageTime= averageTime + (mysesh.times[i]);
-                size++;
+                    averageTime = averageTime + (mysesh.times[1]);
                 }
             }
 
             averageTime =(averageTime/size);
-
-
             return averageTime;
         }
 
 
     };
 
-    set<SetUser> mset;
+    set<SetImplementation::SetUser> mset;
 
-
-    void generate20Sesh(vector<SetUser> ugh)
+    SetImplementation(int&, SetImplementation::SetUser*&)
     {
-        srand(time(0));     
-        for(int i=0; i<ugh.size();i++)
-        {
 
-            string name=ugh.at(i).getNAME();
-            int washUsed=rand()%2; //1 for used
-            int dryUsed=rand()%2;
-            int washTime;
-            int dryTime;
-            if(washUsed==1)
+    }
+
+    SetImplementation()
+    {
+
+    }
+
+    void generate20Sesh(vector<SetUser>& userVector)
+    {
+        srand(time(0));      
+        for(int i = 0; i < userVector.size(); i++)
+        {
+            string name=userVector.at(i).getNAME();
+            for(int j=0; j<=19;j++)
             {
-                washTime=(rand() % 24);                  
-            }
-            if(dryUsed==1)
-            {
-                dryTime=(rand() % 24);                               
-            }
-            for(int i=0; i<=19;i++)
-            {
-                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
+                int washUsed=rand()%2; //1 for used
+                int dryUsed=rand()%2;
+                int washTime;
+                int dryTime;
+                if(washUsed==1)
+                {
+                    washTime=(rand() % 24);                  
+                }
+                if(dryUsed==1)
+                {
+                    dryTime=(rand() % 24);                               
+                }
+                userVector.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
         }
     }
@@ -1667,6 +1660,7 @@ class SetImplementation
         }
         return setVector;
     }
+    
 
     //Basically just get a vector of all of the washing times.
     vector<int> generateWashingTimesVector(vector<SetUser> setUsers)
@@ -1674,7 +1668,8 @@ class SetImplementation
         vector<int> averageWashingTimes;
         for (int i = 0; i < setUsers.size(); i++)
         {
-            averageWashingTimes.push_back(setUsers.at(i).getWashAverage());
+            double thisUserAverageWash = setUsers.at(i).userAverageWashing();
+            averageWashingTimes.push_back(thisUserAverageWash);
         }
         return averageWashingTimes;
     }
@@ -1684,7 +1679,8 @@ class SetImplementation
         vector<int> averageDryingTimes;
         for (int i = 0; i < setUsers.size(); i++)
         {
-            averageDryingTimes.push_back(setUsers.at(i).getDryAverage());
+            double thisUserAverageDry = setUsers.at(i).userAverageDrying();
+            averageDryingTimes.push_back(thisUserAverageDry);
         }
         return averageDryingTimes;
     }
@@ -1692,6 +1688,7 @@ class SetImplementation
     double totalAverageWashing()
     {
         vector<SetUser> setUsers = generateSetVector();
+        generate20Sesh(setUsers);
         vector<int> myVec= generateWashingTimesVector(setUsers);
         double avg = 0.0;
         for(int i=0;i<myVec.size();i++)
@@ -1700,12 +1697,14 @@ class SetImplementation
         }
 
         avg=avg/(myVec.size());
-            return avg;
+        cout<<avg;
+        return avg;
     }
 
     double totalAverageDrying()
     {
         vector<SetUser> setUsers = generateSetVector();
+        generate20Sesh(setUsers);
         vector<int> myVec= generateDryingTimesVector(setUsers);
         double avg = 0.0;
 
@@ -1715,7 +1714,7 @@ class SetImplementation
         }
 
         avg=avg/(myVec.size());
-        
+        cout<<avg;
         return avg;
     }
 
@@ -1934,7 +1933,6 @@ class MapImplementation
         for (unordered_map<int, MapUser>::iterator iter = map.begin(); iter != map.end(); iter++)
         {
             MapUser temp = iter->second;
-           // MapUser* tempPtr = &temp;
             mapVector.push_back(temp);
         }
         return mapVector;
