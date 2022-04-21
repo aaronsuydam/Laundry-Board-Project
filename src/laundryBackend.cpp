@@ -1630,13 +1630,13 @@ class MapImplementation
     unordered_map<int, MapUser> map;
 
 
-    void generate20Sesh(vector<MapUser*>& userVector)
+    void generate20Sesh(vector<MapUser>& userVector)
     {
         //srand( (unsigned)time( NULL ) );      
         for(int i = 0; i < userVector.size(); i++)
         {
             cout<<"bug?";
-            string name=userVector.at(i)->getNAME();
+            string name=userVector.at(i).getNAME();
             int washUsed=rand()%2; //1 for used
             int dryUsed=rand()%2;
             int washTime;
@@ -1651,47 +1651,47 @@ class MapImplementation
             }
             for(int i=0; i<=19;i++)
             {
-                    userVector.at(i)->addSession(name,washUsed,dryUsed,washTime,dryTime);
+                    userVector.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
         }
     }
 
-    vector<MapUser*> generateMapVector()
+    vector<MapUser> generateMapVector()
     {
-        vector<MapUser*> mapVector;
+        vector<MapUser> mapVector;
         for (unordered_map<int, MapUser>::iterator iter = map.begin(); iter != map.end(); iter++)
         {
             MapUser temp = iter->second;
-            MapUser* tempPtr = &temp;
-            mapVector.push_back(tempPtr);
+           // MapUser* tempPtr = &temp;
+            mapVector.push_back(temp);
         }
         return mapVector;
     }
 
     //Basically just get a vector of all of the washing times.
-    vector<int> generateWashingTimesVector(vector<MapUser*> mapUsers)
+    vector<int> generateWashingTimesVector(vector<MapUser> mapUsers)
     {
         vector<int> averageWashingTimes;
         for (int i = 0; i < mapUsers.size(); i++)
         {
-            averageWashingTimes.push_back(mapUsers.at(i)->getWashAverage());
+            averageWashingTimes.push_back(mapUsers.at(i).getWashAverage());
         }
         return averageWashingTimes;
     }
 
-    vector<int> generateDryingTimesVector(vector<MapUser*> mapUsers)
+    vector<int> generateDryingTimesVector(vector<MapUser> mapUsers)
     {
         vector<int> averageDryingTimes;
         for (int i = 0; i < mapUsers.size(); i++)
         {
-            averageDryingTimes.push_back(mapUsers.at(i)->getWashAverage());
+            averageDryingTimes.push_back(mapUsers.at(i).getWashAverage());
         }
         return averageDryingTimes;
     }
 
     double totalAverageWashing()
     {
-        vector<MapUser*> mapUsers = generateMapVector();
+        vector<MapUser> mapUsers = generateMapVector();
         generate20Sesh(mapUsers);
         vector<int> myVec= generateWashingTimesVector(mapUsers);
             double avg;
@@ -1706,7 +1706,7 @@ class MapImplementation
 
     double totalAverageDrying()
     {
-        vector<MapUser*> mapUsers = generateMapVector();
+        vector<MapUser> mapUsers = generateMapVector();
         vector<int> myVec= generateDryingTimesVector(mapUsers);
         double avg;
 
