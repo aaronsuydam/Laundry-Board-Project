@@ -1722,7 +1722,7 @@ class MapImplementation
 
 };
 
-/*
+
 class SetImplementation
 {
 
@@ -1915,13 +1915,13 @@ class SetImplementation
     set<SetUser> mset;
 
 
-    void generate20Sesh(vector<SetUser*> ugh)
+    void generate20Sesh(vector<SetUser> ugh)
     {
         srand( (unsigned)time( NULL ) );      
         for(int i=0; i<ugh.size();i++)
         {
 
-            string name=ugh.at(i)->getNAME();
+            string name=ugh.at(i).getNAME();
             int washUsed=rand()%2; //1 for used
             int dryUsed=rand()%2;
             int washTime;
@@ -1936,49 +1936,48 @@ class SetImplementation
             }
             for(int i=0; i<=19;i++)
             {
-                    ugh.at(i)->addSession(name,washUsed,dryUsed,washTime,dryTime);
+                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
         }
     }
 
-    vector<SetUser*> generateSetVector()
+    vector<SetUser> generateSetVector()
     {
-        vector<SetUser*> setVector;
+        vector<SetUser> setVector;
         set<SetUser>::iterator iter;
 
         for (iter = mset.begin(); iter != mset.end(); iter++)
         {
             SetUser temp = *iter;
-            SetUser* tempPtr = &temp;
-            setVector.push_back(tempPtr);
+            setVector.push_back(temp);
         }
         return setVector;
     }
 
     //Basically just get a vector of all of the washing times.
-    vector<int> generateWashingTimesVector(vector<SetUser*> setUsers)
+    vector<int> generateWashingTimesVector(vector<SetUser> setUsers)
     {
         vector<int> averageWashingTimes;
         for (int i = 0; i < setUsers.size(); i++)
         {
-            averageWashingTimes.push_back(setUsers.at(i)->getWashAverage());
+            averageWashingTimes.push_back(setUsers.at(i).getWashAverage());
         }
         return averageWashingTimes;
     }
 
-    vector<int> generateDryingTimesVector(vector<SetUser*> setUsers)
+    vector<int> generateDryingTimesVector(vector<SetUser> setUsers)
     {
         vector<int> averageDryingTimes;
         for (int i = 0; i < setUsers.size(); i++)
         {
-            averageDryingTimes.push_back(setUsers.at(i)->getWashAverage());
+            averageDryingTimes.push_back(setUsers.at(i).getDryAverage());
         }
         return averageDryingTimes;
     }
 
     double totalAverageWashing()
     {
-        vector<SetUser*> setUsers = generateSetVector();
+        vector<SetUser> setUsers = generateSetVector();
         vector<int> myVec= generateWashingTimesVector(setUsers);
             double avg;
         for(int i=0;i<myVec.size();i++)
@@ -1992,7 +1991,7 @@ class SetImplementation
 
     double totalAverageDrying()
     {
-        vector<SetUser*> setUsers = generateSetVector();
+        vector<SetUser> setUsers = generateSetVector();
         vector<int> myVec= generateDryingTimesVector(setUsers);
         double avg;
 
@@ -2006,4 +2005,4 @@ class SetImplementation
         return avg;
     }
 
-};*/
+};
