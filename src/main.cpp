@@ -9,7 +9,7 @@
 using namespace std;
 
 
-void thresHolds(vector<int>, vector<int>);
+void thresHolds(double, double);
 vector<int> comprehend(string userInput);
 
 
@@ -52,7 +52,7 @@ int main()
 
         // push that to the map
         MapImplementation::MapUser newMapUser(gator1ID, fullName, phoneNum, roomNum);
-        laundryMap.map.emplace(i, newMapUser);
+        laundryMap.map.emplace(gator1ID, newMapUser);
 
         // push that to the set
        // SetImplementation::SetUser newSetUser(gator1ID, fullName, phoneNum, roomNum);
@@ -67,6 +67,7 @@ int main()
     vector<double> AVLInfo(5, 0.0);
     vector<double> mapInfo(5, 0.0);
     vector<double> setInfo(5, 0.0);
+    
     while (running)
     {
         getline(cin,userInput);
@@ -85,7 +86,7 @@ int main()
         {
             //AVLInfo.at(1) = totalAverageDrying(laundryTree.getRoot());
             mapInfo.at(1) = laundryMap.totalAverageDrying();
-           // setInfo.at(1) = laundrySet.totalAverageDrying();
+            //setInfo.at(1) = laundrySet.totalAverageDrying();
             break;
         }
         case 3:
@@ -100,8 +101,12 @@ int main()
             //AVLTree::UserNode* avlUserToCalc = nullptr;
 
             //get all of the nodes in the map
-            MapImplementation::MapUser* mapUserToCalc = &laundryMap.map.at(commands.at(1));
-            mapUserToCalc->userAverageWashing(mapUserToCalc);
+            MapImplementation::MapUser mapUserToCalc = laundryMap.map.at(userToFind);
+            vector<MapImplementation::MapUser> toAddSessionsTo = {mapUserToCalc};
+            laundryMap.generate20Sesh(toAddSessionsTo);
+            mapUserToCalc = toAddSessionsTo.at(0);
+            int thisUserAverageWash = mapUserToCalc.userAverageWashing();
+            cout << thisUserAverageWash;
             //Get all of the nodes in the set
             //vector<SetImplementation::SetUser*> setUsers = laundrySet.generateSetVector();
             //SetImplementation::SetUser* setUserToCalc = nullptr;
@@ -153,8 +158,12 @@ int main()
             //AVLTree::UserNode* avlUserToCalc = nullptr;
 
             //get all of the nodes in the map
-            MapImplementation::MapUser* mapUserToCalc = &laundryMap.map.at(commands.at(1));
-            mapUserToCalc->userAverageWashing(mapUserToCalc);
+            MapImplementation::MapUser mapUserToCalc = laundryMap.map.at(userToFind);
+            vector<MapImplementation::MapUser> toAddSessionsTo = {mapUserToCalc};
+            laundryMap.generate20Sesh(toAddSessionsTo);
+            mapUserToCalc = toAddSessionsTo.at(0);
+            int thisUserAverageDry = mapUserToCalc.userAverageDrying();
+            cout << thisUserAverageDry;
             //Get all of the nodes in the set
             //vector<SetImplementation::SetUser*> setUsers = laundrySet.generateSetVector();
             /*SetImplementation::SetUser* setUserToCalc = nullptr;
@@ -198,8 +207,9 @@ int main()
             // vector<int> stuff = laundryTree.inorderTraversal(laundryTree.getRoot());
             // vector<int> washingTimes = inorderTraversalWashingTimes(laundryTree.getRoot());
             // vector<int> dryingTimes = inorderTraversalDrying(laundryTree.getRoot());
-
-            //thresHolds(washingTimes, dryingTimes);
+            mapInfo.at(0) = laundryMap.totalAverageWashing();
+            mapInfo.at(1) = laundryMap.totalAverageDrying();
+            thresHolds(mapInfo.at(0), mapInfo.at(1));
             break;
         }
 
@@ -245,61 +255,53 @@ vector<int> comprehend(string userInput)
     return {};
 }
 
-void thresHolds(vector<int> washing, vector<int> drying)
+void thresHolds(double washing, double drying)
 {
     ///24 hours ==bad
     //Green 2 hrs
     //Yellow 4 hrs
     //Red >4 hrs
-    double dryingT, washingT;
-    for(int i=0; i<washing.size();i++)
-    {
-        dryingT=dryingT+washing.at(i);
-    }
-    for(int i=0; i<drying.size();i++)
-    {
-        washingT=washingT+drying.at(i);
-    }
-    double avg= (dryingT+washingT)/(washing.size()+drying.size());
+    
+    double avg= (washing+drying)/2;
     //drying
-    if(dryingT<=2.0)
+    if(drying<=2.0)
     {
-        cout<<"Total Average Dryer use time is within GREEN threshold";
+        cout<<"Total Average Dryer use time is within GREEN threshold"<<endl;
     }
-    if(dryingT>2.0&&dryingT<=4.0)
+    if(drying>2.0&&drying<=4.0)
     {
-        cout<<"Total Average Dryer use time is within YELLOW threshold";
+        cout<<"Total Average Dryer use time is within YELLOW threshold"<<endl;
     }
-    if(dryingT>4.0)
+    if(drying>4.0)
     {
-        cout<<"Total Average Dryer use time is within RED threshold";
+        cout<<"Total Average Dryer use time is within RED threshold" << endl;
     }
     //washing
-    if(washingT<=2.0)
+    if(washing<=2.0)
     {
-        cout<<"Total Average Washing use time is within GREEN threshold";
+        cout<<"Total Average Washing use time is within GREEN threshold" << endl; 
     }
-    if(washingT>2.0&&washingT<=4.0)
+    if(washing>2.0&&washing<=4.0)
     {
-        cout<<"Total Average Washing use time is within YELLOW threshold";
+        cout<<"Total Average Washing use time is within YELLOW threshold" << endl; 
     }
-    if(washingT>4.0)
+    if(washing>4.0)
     {
-        cout<<"Total Average Washing use time is within RED threshold";
+        cout<<"Total Average Washing use time is within RED threshold" << endl; 
     }
 
 
     if(avg<=2.0)
     {
-        cout<<"Total Average use time is within GREEN threshold";
+        cout<<"Total Average use time is within GREEN threshold"<<endl;
     }
     if(avg>2.0&&avg<=4.0)
     {
-        cout<<"Total Average use time is within YELLOW threshold";
+        cout<<"Total Average use time is within YELLOW threshold"<<endl;
     }
     if(avg>4.0)
     {
-        cout<<"Total Average use time is within RED threshold";
+        cout<<"Total Average use time is within RED threshold"<<endl;
     }
     
 

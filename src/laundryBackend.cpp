@@ -44,10 +44,10 @@ class Session
     Session(string user, int washerUsed, int dryerUsed, int washTime, int dryTime)
     {
         this->user = user;
-        machinesUsed[1] = washerUsed;
-        machinesUsed[2] = dryerUsed;
-        times[1] = washTime;
-        times[2] = dryTime;
+        machinesUsed[0] = washerUsed;
+        machinesUsed[1] = dryerUsed;
+        times[0] = washTime;
+        times[1] = dryTime;
     }
 };
 
@@ -1121,7 +1121,7 @@ void AVLTree::printPOSTraversal(AVLTree::UserNode* root)
 
 void AVLTree::generate20Sesh(vector<AVLTree::UserNode> ugh)
     {
-        srand( (unsigned)time( NULL ) );      
+        srand(time(0));      
         for(int i=0; i<ugh.size();i++)
         {
 
@@ -1148,9 +1148,9 @@ void AVLTree::generate20Sesh(vector<AVLTree::UserNode> ugh)
 double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode* user)
 {
     //1 washer 2 dryer
-    double averageTime;
+    double averageTime = 0.0;
     vector<Session> myvec=user->sessions;
-    double size;
+    double size = 20;
     for(int i=0; i<user->sessions.size(); i++)
     {
         Session mysesh= user->getSession(i);
@@ -1167,9 +1167,9 @@ double AVLTree::UserNode::userAverageWashing (AVLTree::UserNode* user)
 double AVLTree::UserNode::userAverageDrying (AVLTree::UserNode* user)
 {
     //1 washer 2 dryer
-    double averageTime;
+    double averageTime = 0.0;
     vector<Session> myvec=user->sessions;
-    double size;
+    double size = 20;
     for(int i=0; i<user->sessions.size(); i++)
     {
         Session mysesh= user->getSession(i);
@@ -1238,7 +1238,7 @@ vector<int> inorderTraversalWashingTimes(AVLTree::UserNode* root)
 double totalAverageWashing(AVLTree::UserNode* root)
 {
    vector<int> myVec= inorderTraversalWashingTimes(root);
-    double avg;
+    double avg = 0.0;
    for(int i=0;i<myVec.size();i++)
    {
        avg=avg+(myVec.at(i));
@@ -1297,7 +1297,7 @@ vector<int> inorderTraversalDrying(AVLTree::UserNode* root)
 double totalAverageDrying(AVLTree::UserNode* root)
 {
    vector<int> myVec= inorderTraversalDrying(root);
-    double avg;
+    double avg = 0.0;
    for(int i=0;i<myVec.size();i++)
    {
        avg=avg+(myVec.at(i));
@@ -1587,8 +1587,8 @@ class SetImplementation
         double userAverageWashing()
         {
             //1 washer 2 dryer
-            double averageTime;
-            double size;
+            double averageTime = 0.0;
+            double size = 20;
             for(int i=0; i<sessions.size(); i++)
             {
                 Session mysesh = getSession(i);
@@ -1605,8 +1605,8 @@ class SetImplementation
         double userAverageDrying ()
         {
             //1 washer 2 dryer
-            double averageTime;
-            double size;
+            double averageTime = 0.0;
+            double size = 20;
             for(int i=0; i<sessions.size(); i++)
             {
                 Session mysesh= getSession(i);
@@ -1631,7 +1631,7 @@ class SetImplementation
 
     void generate20Sesh(vector<SetUser> ugh)
     {
-        srand( (unsigned)time( NULL ) );      
+        srand(time(0));     
         for(int i=0; i<ugh.size();i++)
         {
 
@@ -1693,7 +1693,7 @@ class SetImplementation
     {
         vector<SetUser> setUsers = generateSetVector();
         vector<int> myVec= generateWashingTimesVector(setUsers);
-            double avg;
+        double avg = 0.0;
         for(int i=0;i<myVec.size();i++)
         {
             avg=avg+(myVec.at(i));
@@ -1707,7 +1707,7 @@ class SetImplementation
     {
         vector<SetUser> setUsers = generateSetVector();
         vector<int> myVec= generateDryingTimesVector(setUsers);
-        double avg;
+        double avg = 0.0;
 
         for(int i=0;i<myVec.size();i++)
         {
@@ -1859,48 +1859,42 @@ class MapImplementation
         }
 
         //Calculate Averages on a per User Basis
-        double userAverageWashing (MapUser* user)
+        double userAverageWashing()
         {
-            //1 washer 2 dryer
-            double averageTime;
-            vector<Session> myvec=user->sessions;
-            double size;
-            for(int i=0; i<user->sessions.size(); i++)
+            
+            double averageTime = 0.0;
+            double size = 20.0;
+            for(int i=0; i<sessions.size(); i++) //loop through this node's vector of sessions
             {
-                Session mysesh= user->getSession(i);
-                if(mysesh.machinesUsed[i]==1)
+                Session mysesh = sessions.at(i); //grab the current one
+                if(mysesh.machinesUsed[0]==1) //0 washer 1 dryer, average if washer
                 {
-                averageTime= averageTime + (mysesh.times[i]);
-                size++;
+                    averageTime = averageTime + (mysesh.times[0]); //sum all of the washing times.
+
                 }
             }
+
             averageTime =(averageTime/size);
             return averageTime;
         }
 
-        double userAverageDrying (MapUser* user)
-    {
-        //1 washer 2 dryer
-        double averageTime;
-        vector<Session> myvec=user->sessions;
-        double size;
-        for(int i=0; i<user->sessions.size(); i++)
+        double userAverageDrying()
         {
-            Session mysesh= user->getSession(i);
-            if(mysesh.machinesUsed[i]==2)
+            //0 washer 1 dryer
+            double averageTime = 0.0;
+            double size = 20;
+            
+            
+            for(int i=0; i<sessions.size(); i++)
             {
-            averageTime= averageTime + (mysesh.times[i]);
-            size++;
+                Session mysesh = sessions.at(i);
+                if(mysesh.machinesUsed[1]==1)
+                {
+                    averageTime= averageTime + (mysesh.times[1]);
+                }
             }
-        }
-
-        averageTime =(averageTime/size);
-
-
-        return averageTime;
-
-
-
+            averageTime =(averageTime/size);
+            return averageTime;
     }
 
 
@@ -1911,10 +1905,9 @@ class MapImplementation
 
     void generate20Sesh(vector<MapUser>& userVector)
     {
-        //srand( (unsigned)time( NULL ) );      
+        srand(time(0));      
         for(int i = 0; i < userVector.size(); i++)
         {
-            cout<<"bug?";
             string name=userVector.at(i).getNAME();
             for(int j=0; j<=19;j++)
             {
@@ -1953,7 +1946,8 @@ class MapImplementation
         vector<int> averageWashingTimes;
         for (int i = 0; i < mapUsers.size(); i++)
         {
-            averageWashingTimes.push_back(mapUsers.at(i).getWashAverage());
+            double thisUserAverageWash = mapUsers.at(i).userAverageWashing();
+            averageWashingTimes.push_back(thisUserAverageWash);
         }
         return averageWashingTimes;
     }
@@ -1963,7 +1957,8 @@ class MapImplementation
         vector<int> averageDryingTimes;
         for (int i = 0; i < mapUsers.size(); i++)
         {
-            averageDryingTimes.push_back(mapUsers.at(i).getWashAverage());
+            double thisUserAverageDry = mapUsers.at(i).userAverageDrying();
+            averageDryingTimes.push_back(thisUserAverageDry);
         }
         return averageDryingTimes;
     }
@@ -1973,21 +1968,23 @@ class MapImplementation
         vector<MapUser> mapUsers = generateMapVector();
         generate20Sesh(mapUsers);
         vector<int> myVec= generateWashingTimesVector(mapUsers);
-            double avg;
+        double avg = 0.0;
         for(int i=0;i<myVec.size();i++)
         {
             avg=avg+(myVec.at(i));
         }
 
         avg=avg/(myVec.size());
-            cout<<avg;
+        cout<<avg;
+        return avg;
     }
 
     double totalAverageDrying()
     {
         vector<MapUser> mapUsers = generateMapVector();
+        generate20Sesh(mapUsers);
         vector<int> myVec= generateDryingTimesVector(mapUsers);
-        double avg;
+        double avg = 0.0;
 
         for(int i=0;i<myVec.size();i++)
         {
@@ -1995,7 +1992,7 @@ class MapImplementation
         }
 
         avg=avg/(myVec.size());
-        
+        cout<<avg;
         return avg;
     }
 
