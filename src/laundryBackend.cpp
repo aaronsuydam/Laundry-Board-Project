@@ -1916,21 +1916,21 @@ class MapImplementation
         {
             cout<<"bug?";
             string name=userVector.at(i).getNAME();
-            int washUsed=rand()%2; //1 for used
-            int dryUsed=rand()%2;
-            int washTime;
-            int dryTime;
-            if(washUsed==1)
-            {
-                washTime=(rand() % 24);                  
-            }
-            if(dryUsed==1)
-            {
-                dryTime=(rand() % 24);                               
-            }
             for(int j=0; j<=19;j++)
             {
-                    userVector.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
+                int washUsed=rand()%2; //1 for used
+                int dryUsed=rand()%2;
+                int washTime;
+                int dryTime;
+                if(washUsed==1)
+                {
+                    washTime=(rand() % 24);                  
+                }
+                if(dryUsed==1)
+                {
+                    dryTime=(rand() % 24);                               
+                }
+                userVector.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
         }
     }
