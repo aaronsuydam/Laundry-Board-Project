@@ -1,18 +1,18 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <set>
 #include <ctime>
 #include "Sessions.cpp"
 using namespace std;
 
 
-class MapImplementation
+class SetImplementation
 {
 
     
     public:
-    class MapUser
+    class SetUser
     {
         //Metadata
         string NAME;
@@ -30,7 +30,7 @@ class MapImplementation
         
         public:
         //Constructors
-        MapUser()
+        SetUser()
         {
             Gator1ID = -1;
             NAME = "";
@@ -40,7 +40,7 @@ class MapImplementation
             avgWashTime = 0;
         }
 
-        MapUser(int inputGator1ID, string givenNAME)
+        SetUser(int inputGator1ID, string givenNAME)
         {
             Gator1ID = inputGator1ID;
             NAME = givenNAME;
@@ -51,7 +51,7 @@ class MapImplementation
             
         }
 
-        MapUser(int inputGator1ID, string givenNAME, int phone, int room)
+        SetUser(int inputGator1ID, string givenNAME, int phone, int room)
         {
             Gator1ID = inputGator1ID;
             NAME = givenNAME;
@@ -147,7 +147,7 @@ class MapImplementation
         }
 
         //Calculate Averages on a per User Basis
-        double userAverageWashing (MapUser* user)
+        double userAverageWashing (SetUser* user)
     {
         //1 washer 2 dryer
         double averageTime;
@@ -166,7 +166,7 @@ class MapImplementation
         return averageTime;
     }
 
-        double userAverageDrying (MapUser* user)
+        double userAverageDrying (SetUser* user)
     {
         //1 washer 2 dryer
         double averageTime;
@@ -194,16 +194,16 @@ class MapImplementation
 
     };
 
-    unordered_map<int, MapUser> map;
+    set<SetUser> mset;
 
 
-    void generate20Sesh(vector<MapUser> ugh)
+    void generate20Sesh(vector<SetUser*> ugh)
     {
         srand( (unsigned)time( NULL ) );      
         for(int i=0; i<ugh.size();i++)
         {
 
-            string name=ugh.at(i).getNAME();
+            string name=ugh.at(i)->getNAME();
             int washUsed=rand()%2; //1 for used
             int dryUsed=rand()%2;
             int washTime;
@@ -218,48 +218,50 @@ class MapImplementation
             }
             for(int i=0; i<=19;i++)
             {
-                    ugh.at(i).addSession(name,washUsed,dryUsed,washTime,dryTime);
+                    ugh.at(i)->addSession(name,washUsed,dryUsed,washTime,dryTime);
             }
         }
     }
 
-    vector<MapUser*> generateMapVector()
+    vector<SetUser*> generateSetVector()
     {
-        vector<MapUser*> mapVector;
-        for (unordered_map<int, MapUser>::iterator iter = map.begin(); iter != map.end(); iter++)
+        vector<SetUser*> setVector;
+        set<SetUser>::iterator iter;
+
+        for (iter = mset.begin(); iter != mset.end(); iter++)
         {
-            MapUser temp = iter->second;
-            MapUser* tempPtr = &temp;
-            mapVector.push_back(tempPtr);
+            SetUser temp = *iter;
+            SetUser* tempPtr = &temp;
+            setVector.push_back(tempPtr);
         }
-        return mapVector;
+        return setVector;
     }
 
     //Basically just get a vector of all of the washing times.
-    vector<int> generateWashingTimesVector(vector<MapUser*> mapUsers)
+    vector<int> generateWashingTimesVector(vector<SetUser*> setUsers)
     {
         vector<int> averageWashingTimes;
-        for (int i = 0; i < mapUsers.size(); i++)
+        for (int i = 0; i < setUsers.size(); i++)
         {
-            averageWashingTimes.push_back(mapUsers.at(i)->getWashAverage());
+            averageWashingTimes.push_back(setUsers.at(i)->getWashAverage());
         }
         return averageWashingTimes;
     }
 
-    vector<int> generateDryingTimesVector(vector<MapUser*> mapUsers)
+    vector<int> generateDryingTimesVector(vector<SetUser*> setUsers)
     {
         vector<int> averageDryingTimes;
-        for (int i = 0; i < mapUsers.size(); i++)
+        for (int i = 0; i < setUsers.size(); i++)
         {
-            averageDryingTimes.push_back(mapUsers.at(i)->getWashAverage());
+            averageDryingTimes.push_back(setUsers.at(i)->getWashAverage());
         }
         return averageDryingTimes;
     }
 
     double totalAverageWashing()
     {
-        vector<MapUser*> mapUsers = generateMapVector();
-        vector<int> myVec= generateWashingTimesVector(mapUsers);
+        vector<SetUser*> setUsers = generateSetVector();
+        vector<int> myVec= generateWashingTimesVector(setUsers);
             double avg;
         for(int i=0;i<myVec.size();i++)
         {
@@ -272,8 +274,8 @@ class MapImplementation
 
     double totalAverageDrying()
     {
-        vector<MapUser*> mapUsers = generateMapVector();
-        vector<int> myVec= generateDryingTimesVector(mapUsers);
+        vector<SetUser*> setUsers = generateSetVector();
+        vector<int> myVec= generateDryingTimesVector(setUsers);
         double avg;
 
         for(int i=0;i<myVec.size();i++)
