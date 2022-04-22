@@ -1697,7 +1697,6 @@ class SetImplementation
         }
 
         avg=avg/(myVec.size());
-        cout<<avg;
         return avg;
     }
 
@@ -1714,7 +1713,6 @@ class SetImplementation
         }
 
         avg=avg/(myVec.size());
-        cout<<avg;
         return avg;
     }
 
@@ -1973,7 +1971,7 @@ class MapImplementation
         }
 
         avg=avg/(myVec.size());
-        cout<<avg;
+       
         return avg;
     }
 
@@ -1990,7 +1988,6 @@ class MapImplementation
         }
 
         avg=avg/(myVec.size());
-        cout<<avg;
         return avg;
     }
 
