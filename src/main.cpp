@@ -1,15 +1,17 @@
 
-#include "C:\\Users\\suyda\\GitHub\\Laundry-Board-Project\\src\\laundryBackend.cpp"
+#include "C:\\Users\\andre\\repos2\\laundryBackend.cpp"
 #include <iostream>
 #include <regex>
 #include <string>
 #include <fstream>
 #include <set>
 #include <map>
+#include <ctime>
 using namespace std;
 
 
 void thresHolds(double, double);
+void thresHoldsSet(double, double);
 vector<int> comprehend(string userInput);
 
 
@@ -18,7 +20,7 @@ int main()
 {
     //Read in the users file
 
-    string path = "C:\\Users\\suyda\\GitHub\\Laundry-Board-Project\\src\\fullInput.txt";
+    string path = "C:\\Users\\andre\\repos2\\fullInput.txt";
     ifstream inputFile(path);
 
     int n = 0;
@@ -93,10 +95,10 @@ int main()
             cout << "Total average drying time for all users:" << endl;
             cout << "Map-based: ";
             mapInfo.at(0) = laundryMap.totalAverageDrying();
-            cout << mapInfo.at(1) << endl;
+            cout << mapInfo.at(0) << endl;
             cout << "Set-based: ";
             setInfo.at(0) = laundrySet.totalAverageDrying();
-            cout << setInfo.at(1) << endl;
+            cout << setInfo.at(0) << endl;
             break;
         }
         case 3:
@@ -119,6 +121,7 @@ int main()
             int setUserAverageWash = 0;
             
             vector<SetImplementation::SetUser> setUsers = laundrySet.generateSetVector();
+            laundrySet.generate20Sesh(setUsers);
             SetImplementation::SetUser* setUserToCalc;
             //Get all of the nodes in the set
             //vector<SetImplementation::SetUser*> setUsers = laundrySet.generateSetVector();
@@ -228,6 +231,9 @@ int main()
             mapInfo.at(0) = laundryMap.totalAverageWashing();
             mapInfo.at(1) = laundryMap.totalAverageDrying();
             thresHolds(mapInfo.at(0), mapInfo.at(1));
+            setInfo.at(0) = laundrySet.totalAverageWashing();
+            setInfo.at(1) = laundrySet.totalAverageDrying();
+            thresHoldsSet(setInfo.at(0),setInfo.at(1));
             break;
         }
 
@@ -279,7 +285,7 @@ void thresHolds(double washing, double drying)
     //Green 2 hrs
     //Yellow 4 hrs
     //Red >4 hrs
-    
+    cout<<"Map based Thresholds:"<<endl;
     double avg= (washing+drying)/2;
     //drying
     if(drying<=2.0)
@@ -326,4 +332,56 @@ void thresHolds(double washing, double drying)
 
 
 }
+void thresHoldsSet(double washing, double drying)
+{
+    ///24 hours ==bad
+    //Green 2 hrs
+    //Yellow 4 hrs
+    //Red >4 hrs
+    cout<<"Set based Thresholds:"<<endl;
+    double avg= (washing+drying)/2;
+    //drying
+    if(drying<=2.0)
+    {
+        cout<<"Total Average Dryer use time is within GREEN threshold"<<endl;
+    }
+    if(drying>2.0&&drying<=4.0)
+    {
+        cout<<"Total Average Dryer use time is within YELLOW threshold"<<endl;
+    }
+    if(drying>4.0)
+    {
+        cout<<"Total Average Dryer use time is within RED threshold" << endl;
+    }
+    //washing
+    if(washing<=2.0)
+    {
+        cout<<"Total Average Washing use time is within GREEN threshold" << endl; 
+    }
+    if(washing>2.0&&washing<=4.0)
+    {
+        cout<<"Total Average Washing use time is within YELLOW threshold" << endl; 
+    }
+    if(washing>4.0)
+    {
+        cout<<"Total Average Washing use time is within RED threshold" << endl; 
+    }
 
+
+    if(avg<=2.0)
+    {
+        cout<<"Total Average use time is within GREEN threshold"<<endl;
+    }
+    if(avg>2.0&&avg<=4.0)
+    {
+        cout<<"Total Average use time is within YELLOW threshold"<<endl;
+    }
+    if(avg>4.0)
+    {
+        cout<<"Total Average use time is within RED threshold"<<endl;
+    }
+    
+
+
+
+}
